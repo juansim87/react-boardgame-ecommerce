@@ -6,9 +6,135 @@
 
 body {
     margin: 0;
-    font-family: "DM Sans", sans-serif;
-
+    font-family: "Lexend", sans-serif;
 }
 
 @theme {
+    /* Colors */
+    --color-primary: #44633f;
+    --color-secondary: #5a352a;
+    --color-error: #ff0022;
+    --color-warning: #ffd23f;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+    --spacing-4xl: 96px;
+
+    /* Typography Scale */
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 16px;
+    --text-lg: 18px;
+    --text-xl: 20px;
+    --text-2xl: 24px;
+    --text-3xl: 30px;
+    --text-4xl: 36px;
+
+    /* Border Radius */
+    --radius-none: 0px;
+    --radius-sm: 2px;
+    --radius-default: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* Container/Max-width overrides */
+    --max-width-xs: 320px;
+    --max-width-sm: 384px;
+    --max-width-md: 448px;
+    --max-width-lg: 512px;
+    --max-width-xl: 576px;
+    --max-width-2xl: 672px;
+    --max-width-3xl: 768px;
+    --max-width-4xl: 896px;
+    --max-width-5xl: 1024px;
+    --max-width-6xl: 1152px;
+    --max-width-7xl: 1280px;
+    --max-width-full: 100%;
+    --max-width-min: min-content;
+    --max-width-max: max-content;
+    --max-width-fit: fit-content;
+    --max-width-prose: 65ch;
+    --max-width-screen-sm: 640px;
+    --max-width-screen-md: 768px;
+    --max-width-screen-lg: 1024px;
+    --max-width-screen-xl: 1280px;
+    --max-width-screen-2xl: 1536px;
+}
+
+@layer components {
+    .perfect-center {
+        @apply flex flex-col justify-center items-center;
+    }
+
+    .align-row {
+        @apply flex justify-center items-center;
+    }
+
+    /* Base typo */
+
+    h1 {
+        @apply text-3xl;
+    }
+    h2 {
+        @apply text-2xl;
+    }
+    h3 {
+        @apply text-xl;
+    }
+    h4 {
+        @apply text-lg;
+    }
+    h5 {
+        @apply text-base;
+    }
+    h6 {
+        @apply text-sm;
+    }
+
+    /* Customized positioning*/
+
+    /* Padding with spacing */
+    .p-md {
+        @apply p-4;
+    }
+    .p-lg {
+        @apply p-6;
+    }
+
+    /* Gap usando variables de espaciado */
+    .gap-md {
+        @apply gap-4;
+    }
+
+    /* Space-between */
+    .space-y-xs > * + * {
+        @apply mt-1;
+    }
+
+    /* Positioning */
+
+    /* Top */
+    .top-md {
+        @apply top-4;
+    }
+
+    /* Right */
+    .right-md {
+        @apply right-4;
+    }
 }

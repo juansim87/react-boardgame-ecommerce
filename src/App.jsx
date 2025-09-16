@@ -1,5 +1,10 @@
 import "./App.css";
+import { Header } from "./components/Header";
 
 export const App = () => {
-    return <></>;
+    return (
+        <div className="w-full">
+            <Header />
+        </div>
+    );
 };
