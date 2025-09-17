@@ -1,5 +1,5 @@
-import { Adv } from "./Adv";
-import { NavBar } from "./NavBar";
+import { Adv } from "../components/Adv";
+import { NavBar } from "../components/NavBar";
 
 export const Header = () => {
     return (
