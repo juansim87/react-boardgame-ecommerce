@@ -1,3 +1,9 @@
+import { CTASignUp } from "../components/CTASignUp";
+
 export const HomePage = () => {
-    return <div>HomePage</div>;
+    return (
+        <div>
+            <CTASignUp />
+        </div>
+    );
 };
