@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import bannerImg from "../assets/images/banner-img.png";
 import { Button } from "./Button";
 import { Container } from "./Container";
@@ -14,9 +15,11 @@ export const CTASignUp = () => {
                     <p className="self-center">
                         Y gana puntos para conseguir descuentos en tus juegos favoritos
                     </p>
-                    <Button variant="primary">
-                        <p>Registrarse</p>
-                    </Button>
+                    <Link to="/register">
+                        <Button variant="primary">
+                            <p>Registrarse</p>
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </Container>

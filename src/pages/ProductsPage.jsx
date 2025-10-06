@@ -3,14 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import { Card } from "../components/Card";
 import { api } from "../core/http/axios";
 
-export const SearchPage = () => {
+export const ProductsPage = () => {
     const [products, setProducts] = useState([]);
     const [searchParams] = useSearchParams();
     const q = (searchParams.get("q") || "").trim().toLowerCase();
-
-    const orderedProducts = [...products].sort((a, b) =>
-        a.name.localeCompare(b.name, "es", { sensitivity: "base" })
-    );
 
     useEffect(() => {
         api.get("/products")

@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import menu from "../assets/icons/menu-primary.png";
-import trolly from "../assets/icons/trolly.png";
-import user from "../assets/icons/user.png";
 import logoRow from "../assets/logos/ludokracia-final-row.png";
 import logoName from "../assets/logos/ludokracia-title-green.png";
 import { Container } from "./Container";
 import { SearchInput } from "./SearchInput";
+import { UserAndCart } from "./UserAndCart";
 
 export const NavBar = () => {
     return (
@@ -17,18 +16,11 @@ export const NavBar = () => {
                             <div role="button" className="max-w-[32px] cursor-pointer">
                                 <img src={menu} />
                             </div>
-                            <div className="max-w-[200px] sm:max-w-[300px]">
+                            <Link to="/" className="max-w-[200px] sm:max-w-[300px] cursor-pointer">
                                 <img src={logoName} className="w-full" />
-                            </div>
+                            </Link>
                         </div>
-                        <div className="align-row gap-sm">
-                            <div role="button" className="max-w-[32px] cursor-pointer">
-                                <img src={user} />
-                            </div>
-                            <div role="button" className="max-w-[32px] cursor-pointer">
-                                <img src={trolly} />
-                            </div>
-                        </div>
+                        <UserAndCart />
                     </div>
                     <SearchInput />
                 </div>
@@ -42,14 +34,7 @@ export const NavBar = () => {
                             </Link>
                         </div>
                         <SearchInput />
-                        <div className="align-row gap-sm">
-                            <div role="button" className="max-w-[52px] cursor-pointer">
-                                <img src={user} className="w-full" />
-                            </div>
-                            <div role="button" className="max-w-[52px] cursor-pointer">
-                                <img src={trolly} className="w-full" />
-                            </div>
-                        </div>
+                        <UserAndCart />
                     </div>
                     <div role="button">
                         <p>Aquí van los elementos del menú</p>
