@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import menu from "../assets/icons/menu-primary.png";
 import trolly from "../assets/icons/trolly.png";
 import user from "../assets/icons/user.png";
@@ -36,9 +37,9 @@ export const NavBar = () => {
                 <div className=" w-full perfect-center p-xs gap-sm sm:p-sm">
                     <div className="w-full align-row justify-between gap-4">
                         <div className="align-row gap-sm">
-                            <div className="max-w-[260px]">
+                            <Link to="/" className="max-w-[260px] cursor-pointer">
                                 <img src={logoRow} className="w-full" />
-                            </div>
+                            </Link>
                         </div>
                         <SearchInput />
                         <div className="align-row gap-sm">
