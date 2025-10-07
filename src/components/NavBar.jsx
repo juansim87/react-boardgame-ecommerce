@@ -36,9 +36,6 @@ export const NavBar = () => {
                         <SearchInput />
                         <UserAndCart />
                     </div>
-                    <div role="button">
-                        <p>Aquí van los elementos del menú</p>
-                    </div>
                 </div>
             </Container>
         </nav>

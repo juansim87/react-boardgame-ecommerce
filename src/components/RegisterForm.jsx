@@ -67,7 +67,10 @@ export const RegisterForm = ({ onSubmit }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md bg-secondary-light p-4">
+        <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4 bg-secondary-light p-8 border-2 rounded-2xl"
+        >
             <label className="label">
                 Usuario
                 <Input
@@ -142,7 +145,14 @@ export const RegisterForm = ({ onSubmit }) => {
             </label>
 
             <label className="flex gap-2 items-center">
-                <input type="checkbox" name="terms" checked={form.terms} onChange={handleChange} required />
+                <input
+                    type="checkbox"
+                    name="terms"
+                    checked={form.terms}
+                    onChange={handleChange}
+                    required
+                    className="cursor-pointer"
+                />
                 Acepto los términos y la política de privacidad
             </label>
 

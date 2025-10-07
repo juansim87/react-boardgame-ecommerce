@@ -6,11 +6,11 @@
 // Text size: 16px; Line height: 150%
 // Padding: 12px; 20px
 
-export const Input = ({ ...props }) => {
+export const Input = ({ className = "", ...props }) => {
     return (
         <input
             {...props}
-            className={`bg-white border text-landing-brand-gray text-landing-lg placeholder:text-landing-brand-gray rounded-xl py-3 px-6 focus:outline-none focus:ring-2 transition ${props.className}`}
+            className={`bg-white border text-landing-lg placeholder:text-gray rounded-xl py-3 px-6 focus:outline-none focus:ring-2 transition ${props.className}`}
         />
     );
 };

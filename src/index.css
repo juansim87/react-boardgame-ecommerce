@@ -134,7 +134,7 @@ body {
     }
 
     .label {
-        @apply flex justify-between items-center;
+        @apply flex justify-between items-center gap-4;
     }
 
     /* Base typo */
