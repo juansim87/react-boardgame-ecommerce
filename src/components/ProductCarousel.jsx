@@ -12,9 +12,9 @@ export const ProductCarousel = ({ title, products, sortBy = "newest", limit = 5 
     const items = [...products].sort(comparator).slice(0, limit);
 
     return (
-        <section className="my-10">
+        <section className="my-10 bg-brand-200 p-4">
             <h2 className="font-semibold mb-4">{title}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-1">
                 {items.map((product) => (
                     <Card key={product._id} product={product} />
                 ))}

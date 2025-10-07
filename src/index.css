@@ -133,6 +133,10 @@ body {
         @apply flex justify-center items-center;
     }
 
+    .label {
+        @apply flex justify-between items-center;
+    }
+
     /* Base typo */
 
     h1 {

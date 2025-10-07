@@ -11,7 +11,10 @@ export const Card = ({ product }) => {
     };
 
     return (
-        <div key={product._id} className="perfect-center  bg-brand-300 border p-4 rounded gap-2">
+        <div
+            key={product._id}
+            className="perfect-center  bg-brand-300 border-3 border-secondary p-4 rounded-2xl gap-2"
+        >
             <h4>{product.name}</h4>
             <div className="h-50">
                 <img src={product.images} alt={`Portada de ${product.name}`} className="h-full" />
