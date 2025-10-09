@@ -45,9 +45,10 @@ export const LoginForm = () => {
         setForm({ ...form, [name]: value });
     };
 
-    const onLoginSubmit = (event) => {
+    const onLoginSubmit = async (event) => {
         event.preventDefault();
         alert(`Email: ${form.email}\nPassword: ${form.password}`);
+        await login(form);
         setForm(INITIAL_FORM);
     };
 

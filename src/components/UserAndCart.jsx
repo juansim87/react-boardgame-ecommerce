@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import trolly from "../assets/icons/trolly.png";
-import user from "../assets/icons/user.png";
+import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../core/auth/useAuth";
 
 export const UserAndCart = () => {
     const [isOpen, setIsOpen] = useState(false);
     const userRef = useRef(null);
     const { pathname } = useLocation();
+    const { user } = useContext(AuthContext);
+    const { logout } = useAuth();
+    console.log("Usuario:", user);
 
     useEffect(() => {
         const onDocClick = (e) => {
@@ -38,7 +42,7 @@ export const UserAndCart = () => {
                     <img src={user} alt="Usuario" className="w-full h-full object-contain" />
                 </button>
 
-                {isOpen && (
+                {isOpen && !user && (
                     <div
                         role="menu"
                         className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
@@ -59,6 +63,22 @@ export const UserAndCart = () => {
                         >
                             Registrarse
                         </Link>
+                    </div>
+                )}
+                {isOpen && user && (
+                    <div
+                        role="menu"
+                        className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
+                    >
+                        {/* <Link
+                            to="/login"
+                            role="menuitem"
+                            className="block text-brand-400 rounded-md px-2 py-1 hover:bg-black/5"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Iniciar sesión
+                        </Link> */}
+                        <button onClick={logout}>Logout</button>
                     </div>
                 )}
             </div>

@@ -24,9 +24,10 @@ export const App = () => {
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="private" element={<PrivateRoute />}>
+                        <Route path="admin" />
+                    </Route>
                     <Route path="*" element={<Page404 />} />
-
-                    <Route path="private" element={<PrivateRoute />}></Route>
                 </Routes>
             </MainBox>
             <Footer />
