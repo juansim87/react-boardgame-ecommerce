@@ -1,90 +1,85 @@
 import { useState } from "react";
+import { useAuth } from "../core/auth/useAuth";
 import { Button } from "./Button";
-import { Input } from "./Input"; // si choca con otra lib, aliaséalo: `import { Input as TextInput } from "./Input"`
+import { Container } from "./Container";
+import { FormInput } from "./FormInput";
 
-export const LoginForm = ({ onSubmit }) => {
-    const [form, setForm] = useState({ email: "", password: "", remember: false });
+const INITIAL_FORM = { email: "", password: "" };
 
-    const handleChange = (event) => {
-        const { name, type, value, checked } = event.target;
-        setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+const LOGIN_FIELDS = [
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "email",
+            type: "email",
+            placeholder: "admin@admin.com",
+            label: "Email",
+            required: true,
+        },
+        label: {
+            text: "Email",
+            className: "",
+        },
+    },
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "password",
+            type: "password",
+            placeholder: "1234",
+            required: true,
+        },
+        label: {
+            text: "Contraseña",
+            className: "",
+        },
+    },
+];
+
+export const LoginForm = () => {
+    const [form, setForm] = useState(INITIAL_FORM);
+    const { login } = useAuth();
+
+    const onInputChange = (event) => {
+        const { name, value } = event.target;
+        setForm({ ...form, [name]: value });
     };
 
-    const validate = () =>
-        (!form.email.trim() && "Introduce tu correo.") ||
-        (!/\S+@\S+\.\S+/.test(form.email) && "Correo no válido.") ||
-        (!form.password && "Introduce tu contraseña.") ||
-        null;
-
-    const handleSubmit = async (event) => {
+    const onLoginSubmit = (event) => {
         event.preventDefault();
-        const error = validate();
-        if (error) return alert(error);
-
-        const payload = {
-            email: form.email.trim(),
-            password: form.password,
-            remember: form.remember,
-        };
-
-        if (onSubmit) {
-            await onSubmit(payload);
-            return;
-        }
-
-        try {
-            const res = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
-            if (!res.ok) throw new Error("Login fallido");
-            // éxito: redirige o actualiza estado global
-        } catch (err) {
-            console.error(err);
-            alert("No se pudo iniciar sesión.");
-        }
+        alert(`Email: ${form.email}\nPassword: ${form.password}`);
+        setForm(INITIAL_FORM);
     };
 
     return (
-        <div className="perfect-center gap-4">
-            <h2>Inicio de sesión</h2>
-            <form onSubmit={handleSubmit} className="grid gap-4 max-w-md">
-                <label className="label">
-                    Correo
-                    <Input
-                        type="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="correo@ejemplo.com"
-                        autoComplete="email"
-                        required
-                    />
-                </label>
+        <Container className="flex items-center justify-center min-h-[70vh] max-w-element-width-landing-md">
+            <div className="flex flex-col gap-landing-md w-full bg-white rounded-2xl shadow-landing-lg p-8">
+                <h2 className="text-primary">Iniciar sesión</h2>
 
-                <label className="label">
-                    Contraseña
-                    <Input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        placeholder="••••••••"
-                        autoComplete="current-password"
-                        required
-                    />
-                </label>
-
-                <label className="flex items-center gap-2">
-                    <input type="checkbox" name="remember" checked={form.remember} onChange={handleChange} />
-                    Recordarme
-                </label>
-
-                <Button type="submit" variant="primary">
-                    Entrar
-                </Button>
-            </form>
-        </div>
+                <form className="flex flex-col gap-5" onSubmit={onLoginSubmit}>
+                    {LOGIN_FIELDS.map(({ label, input, containerClass }) => (
+                        <FormInput
+                            key={input.name}
+                            containerClass={containerClass}
+                            input={{
+                                name: input.name,
+                                type: input.type,
+                                placeholder: input.placeholder,
+                                value: form[input.name],
+                                onChange: onInputChange,
+                                required: input.required,
+                            }}
+                            label={{
+                                text: label.text,
+                                className: label.className,
+                            }}
+                        />
+                    ))}
+                    <Button type="submit" className="w-full mt-2 justify-center rounded-full">
+                        Entrar
+                    </Button>
+                </form>
+            </div>
+        </Container>
     );
 };

@@ -1,164 +1,115 @@
 import { useState } from "react";
+import { useAuth } from "../core/auth/useAuth";
 import { Button } from "./Button";
-import { Input } from "./Input";
+import { Container } from "./Container";
+import { FormInput } from "./FormInput";
 
-export const RegisterForm = ({ onSubmit }) => {
-    const [form, setForm] = useState({
-        username: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        terms: false,
-    });
+const INITIAL_FORM = { email: "", password: "", role: "", name: "" };
 
-    const handleChange = (event) => {
-        const { name, type, value, checked } = event.target;
-        setForm((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value,
-        }));
+const REGISTER_FORM_FIELDS = [
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "name",
+            type: "text",
+            placeholder: "Juan Perez",
+            label: "Nombre completo",
+            required: true,
+        },
+        label: {
+            text: "Nombre completo",
+            className: "",
+        },
+    },
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "email",
+            type: "email",
+            placeholder: "admin@admin.com",
+            label: "Email",
+            required: true,
+        },
+        label: {
+            text: "Email",
+            className: "",
+        },
+    },
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "password",
+            type: "password",
+            placeholder: "1234",
+            required: true,
+        },
+        label: {
+            text: "Contraseña",
+            className: "",
+        },
+    },
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "role",
+            type: "text",
+            placeholder: "admin",
+            label: "Rol (admin/user)",
+            required: true,
+        },
+        label: {
+            text: "Rol (admin/user)",
+            className: "",
+        },
+    },
+];
+
+export const RegisterForm = ({}) => {
+    const [form, setForm] = useState(INITIAL_FORM);
+    const { register } = useAuth();
+
+    const onInputChange = (event) => {
+        const { name, value } = event.target;
+        setForm({ ...form, [name]: value });
     };
 
-    const validate = () => {
-        (!form.username.trim() && "Usuario obligatorio") ||
-            (!form.username.trim() && "Nombre obligatorio") ||
-            (!form.lastName.trim() && "Los apellidos son obligatorios.") ||
-            (!form.email.trim() && "El correo es obligatorio.") ||
-            (!/\S+@\S+\.\S+/.test(form.email) && "Correo no válido.") ||
-            ((form.password || "").length < 8 && "La contraseña debe tener al menos 8 caracteres.") ||
-            (form.password !== form.confirmPassword && "Las contraseñas no coinciden.") ||
-            (!form.terms && "Debes aceptar los términos y la privacidad.") ||
-            null;
-    };
-
-    const handleSubmit = async (event) => {
+    const onRegisterSubmit = async (event) => {
         event.preventDefault();
-        const error = validate();
-        if (error) return alert(error);
-        const payload = {
-            username: form.username.trim(),
-            firstName: form.firstName.trim(),
-            lastName: form.lastName.trim(),
-            name: `${form.firstName.trim()} ${form.lastName.trim()}`,
-            email: form.email.trim(),
-            password: form.password,
-            role: "user",
-        };
-
-        if (onSubmit) {
-            await onSubmit(payload);
-            return;
-        }
-
-        try {
-            const response = await fetch("/api/users/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
-            if (!response.ok) throw new Error("Registro fallido");
-            alert("¡Cuenta creada! Revisa tu correo para verificarla.");
-        } catch (err) {
-            console.error(err);
-            alert("Ha ocurrido un error al registrar.");
-        }
+        alert(`Email:  ${form.email}\nPassword: ${form.password}, role: ${form.role} nombre: ${form.name}`);
+        await register(form);
+        setForm(INITIAL_FORM);
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 bg-secondary-light p-8 border-2 rounded-2xl"
-        >
-            <label className="label">
-                Usuario
-                <Input
-                    name="username"
-                    value={form.username}
-                    onChange={handleChange}
-                    required
-                    minLength={3}
-                    maxLength={20}
-                    placeholder="tu_usuario"
-                />
-            </label>
+        <Container className="flex items-center justify-center min-h-[70vh] max-w-element-width-landing-md">
+            <div className="flex flex-col gap-landing-md w-full bg-white rounded-2xl shadow-landing-lg p-8">
+                <h2 className="text-primary">Registro</h2>
 
-            <label className="label">
-                Nombre
-                <Input
-                    name="firstName"
-                    value={form.firstName}
-                    onChange={handleChange}
-                    required
-                    placeholder="Juan"
-                />
-            </label>
+                <form className="flex flex-col gap-5" onSubmit={onRegisterSubmit}>
+                    {REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => (
+                        <FormInput
+                            key={input.name}
+                            containerClass={containerClass}
+                            input={{
+                                name: input.name,
+                                type: input.type,
+                                placeholder: input.placeholder,
+                                value: form[input.name],
+                                onChange: onInputChange,
+                                required: input.required,
+                            }}
+                            label={{
+                                text: label.text,
+                                className: label.className,
+                            }}
+                        />
+                    ))}
 
-            <label className="label">
-                Apellidos
-                <Input
-                    name="lastName"
-                    value={form.lastName}
-                    onChange={handleChange}
-                    required
-                    placeholder="Pérez"
-                />
-            </label>
-
-            <label className="label">
-                Correo
-                <Input
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="correo@ejemplo.com"
-                />
-            </label>
-
-            <label className="label">
-                Contraseña
-                <Input
-                    type="password"
-                    name="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    required
-                    minLength={8}
-                    placeholder="Mínimo 8 caracteres"
-                />
-            </label>
-
-            <label className="label">
-                Repite la contraseña
-                <Input
-                    type="password"
-                    name="confirmPassword"
-                    value={form.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    minLength={8}
-                    placeholder="Igual que la anterior"
-                />
-            </label>
-
-            <label className="flex gap-2 items-center">
-                <input
-                    type="checkbox"
-                    name="terms"
-                    checked={form.terms}
-                    onChange={handleChange}
-                    required
-                    className="cursor-pointer"
-                />
-                Acepto los términos y la política de privacidad
-            </label>
-
-            <Button type="submit" variant="primary">
-                Crear cuenta
-            </Button>
-        </form>
+                    <Button type="submit" className="w-full mt-2 justify-center rounded-full">
+                        Entrar
+                    </Button>
+                </form>
+            </div>
+        </Container>
     );
 };

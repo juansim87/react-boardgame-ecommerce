@@ -10,7 +10,7 @@ export const SearchInput = () => {
         event.preventDefault();
 
         const query = term.trim();
-        navigate(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
+        navigate(query ? `/products?q=${encodeURIComponent(query)}` : "/products");
     };
 
     return (
