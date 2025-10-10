@@ -41,7 +41,11 @@ export const UserAndCart = () => {
                     onClick={() => setIsOpen((o) => !o)}
                     className="w-8 h-8 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 >
-                    <img src={userIcon} alt="Usuario" className="w-full h-full object-contain" />
+                    <img
+                        src={user ? user.avatar : userIcon}
+                        alt="Usuario"
+                        className="w-full h-full object-contain"
+                    />
                 </button>
 
                 {isOpen && !user && (
