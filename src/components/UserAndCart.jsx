@@ -4,7 +4,6 @@ import trolly from "../assets/icons/trolly.png";
 import userIcon from "../assets/icons/user-icon.png";
 import { AuthContext } from "../context/AuthContext";
 import { useAuth } from "../core/auth/useAuth";
-import { Button } from "./Button";
 
 export const UserAndCart = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,12 +38,12 @@ export const UserAndCart = () => {
                     aria-haspopup="menu"
                     aria-expanded={isOpen}
                     onClick={() => setIsOpen((o) => !o)}
-                    className="w-8 h-8 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
+                    className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 >
                     <img
                         src={user ? user.avatar : userIcon}
                         alt="Usuario"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain rounded-4xl"
                     />
                 </button>
 
@@ -76,16 +75,21 @@ export const UserAndCart = () => {
                         role="menu"
                         className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
                     >
-                        <Button variant="primary" onClick={logout}>
+                        <Link
+                            to="/register"
+                            role="menuitem"
+                            className="block text-error-900 rounded-md px-2 py-1 hover:bg-black/5"
+                            onClick={logout}
+                        >
                             Logout
-                        </Button>
+                        </Link>
                     </div>
                 )}
             </div>
 
             <button
                 type="button"
-                className="w-8 h-8 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
+                className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 onClick={() => setIsOpen(false)}
             >
                 <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
