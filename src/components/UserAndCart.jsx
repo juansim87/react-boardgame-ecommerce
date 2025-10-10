@@ -1,8 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import trolly from "../assets/icons/trolly.png";
+import userIcon from "../assets/icons/user-icon.png";
 import { AuthContext } from "../context/AuthContext";
 import { useAuth } from "../core/auth/useAuth";
+import { Button } from "./Button";
 
 export const UserAndCart = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +41,7 @@ export const UserAndCart = () => {
                     onClick={() => setIsOpen((o) => !o)}
                     className="w-8 h-8 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 >
-                    <img src={user} alt="Usuario" className="w-full h-full object-contain" />
+                    <img src={userIcon} alt="Usuario" className="w-full h-full object-contain" />
                 </button>
 
                 {isOpen && !user && (
@@ -70,15 +72,9 @@ export const UserAndCart = () => {
                         role="menu"
                         className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
                     >
-                        {/* <Link
-                            to="/login"
-                            role="menuitem"
-                            className="block text-brand-400 rounded-md px-2 py-1 hover:bg-black/5"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            Iniciar sesión
-                        </Link> */}
-                        <button onClick={logout}>Logout</button>
+                        <Button variant="primary" onClick={logout}>
+                            Logout
+                        </Button>
                     </div>
                 )}
             </div>
