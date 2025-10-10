@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { PrivateRoute } from "./components/PrivateRoute";
 import { AboutPage } from "./pages/AboutPage";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
@@ -24,9 +23,9 @@ export const App = () => {
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="private" element={<PrivateRoute />}>
-                        <Route path="admin" />
-                    </Route>
+                    {/* <Route path="private" element={<PrivateRoute />}>
+                        <Route path="/admin" />
+                    </Route> */}
                     <Route path="*" element={<Page404 />} />
                 </Routes>
             </MainBox>

@@ -16,7 +16,7 @@ export const HomePage = () => {
 
     return (
         <div>
-            {!user && <CTASignUp />}
+            {!user ? <CTASignUp /> : <h1>Bienvenido a Ludokracia, {user.username}</h1>}
             <ProductCarousel title="Novedades" products={products} />
             <ProductCarousel title="Más vendidos" products={products} />
             <ProductCarousel title="Populares" products={products} />
