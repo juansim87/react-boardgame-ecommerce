@@ -12,7 +12,6 @@ export const Card = ({ product }) => {
 
     const handleLike = () => setLiked((prev) => !prev);
 
-    // En caso de que product.images sea array o string
     const mainImage = Array.isArray(product.images) ? product.images[0] : product.images;
 
     return (
@@ -42,7 +41,11 @@ export const Card = ({ product }) => {
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="md">
                 <div className="p-4 text-center">
-                    <img src={mainImage} alt={product.name} className="w-full h-auto mb-4 rounded-md" />
+                    <img
+                        src={mainImage}
+                        alt={product.name}
+                        className="w-full h-auto max-h-[60vh] sm:max-h-[70vh] object-contain mb-4 rounded-md mx-auto"
+                    />
                     <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
                     {product.description && <p className="text-gray-700 mb-4">{product.description}</p>}
                     <p className="text-lg font-medium mb-4">{product.price} €</p>

@@ -2,9 +2,9 @@ import { Card } from "../components/Card";
 
 export const ProductCarousel = ({ title, products, sortBy = "newest", limit = 5 }) => {
     const sorters = {
+        newest: (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate),
         popular: (a, b) => (b.likes ?? 0) - (a.likes ?? 0),
         bestsellers: (a, b) => (b.sales ?? 0) - (a.sales ?? 0),
-        newest: (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate),
     };
 
     const comparator = sorters[sortBy] || sorters.newest;

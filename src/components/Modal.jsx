@@ -103,7 +103,7 @@ export const Modal = ({
     const backgroundClasses = classNames("fixed inset-0", overlayColor);
 
     const modalClasses = classNames(
-        "relative bg-white rounded-lg shadow-xl mx-auto my-8 w-full transition-all duration-300 transform animate-in fade-in-0 zoom-in-95",
+        "relative bg-white rounded-lg shadow-xl mx-auto my-8 w-full transition-all duration-300 transform animate-in fade-in-0 zoom-in-95 max-h-[90vh] overflow-y-auto",
         currentSize,
         className
     );

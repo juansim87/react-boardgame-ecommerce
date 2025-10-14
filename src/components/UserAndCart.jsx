@@ -87,13 +87,15 @@ export const UserAndCart = () => {
                 )}
             </div>
 
-            <button
-                type="button"
-                className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
-                onClick={() => setIsOpen(false)}
-            >
-                <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
-            </button>
+            {user && (
+                <button
+                    type="button"
+                    className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
+                    onClick={() => setIsOpen(false)}
+                >
+                    <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
+                </button>
+            )}
         </div>
     );
 };

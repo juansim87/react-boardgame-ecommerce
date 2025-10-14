@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "../components/Button";
 import { CTASignUp } from "../components/CTASignUp";
 import { ProductCarousel } from "../components/ProductCarousel";
 import { AuthContext } from "../context/AuthContext";
@@ -15,11 +17,16 @@ export const HomePage = () => {
     }, []);
 
     return (
-        <div>
+        <div className="perfect-center">
             {!user ? <CTASignUp /> : <h1>Bienvenido a Ludokracia, {user.username}</h1>}
             <ProductCarousel title="Novedades" products={products} />
             <ProductCarousel title="Más vendidos" products={products} />
             <ProductCarousel title="Populares" products={products} />
+            <Link to="/products">
+                <Button variant="primary" role="button">
+                    Todos nuestros productos
+                </Button>
+            </Link>
         </div>
     );
 };
