@@ -1,37 +1,44 @@
-import { CATEGORIES } from "../constants/categories";
+import { useContext } from "react";
+import { ProductsContext } from "../context/ProductsContext";
 import { Button } from "./Button";
 
+const CATEGORIES_TRANSLATIONS = {
+    accessories: "Accesorios para juegos",
+    family: "Juegos familiares",
+    "hidden-role": "Juegos de rol oculto",
+    strategy: "Juegos de estrategia",
+    party: "Juegos de fiesta",
+    cooperative: "Juegos cooperativos",
+    "deck-building": "Construcción de mazos",
+};
+
 export const CategoryChips = ({ selected = [], onChange }) => {
+    const { categories } = useContext(ProductsContext);
+
     const toggle = (slug) => {
-        const next = selected.includes(slug) ? selected.filter((s) => s !== slug) : [...selected, slug];
+        const next = selected.includes(slug)
+            ? selected.filter((selection) => selection !== slug)
+            : [...selected, slug];
         onChange(next);
     };
 
     return (
-        <div className="perfect-center gap-4">
-            <div className="flex flex-wrap gap-2">
-                {CATEGORIES.map(({ slug, label, description }) => {
-                    const active = selected.includes(slug);
-                    return (
+        <div className="perfect-center gap-2">
+            <div className="flex items-center gap-2 ">
+                {categories?.length > 0 &&
+                    categories.map((cat) => (
                         <Button
-                            key={slug}
-                            type="button"
-                            aria-pressed={active}
-                            title={description}
-                            onClick={() => toggle(slug)}
-                            variant="primary"
+                            key={cat}
+                            onClick={() => toggle(cat)}
+                            variant={selected.includes(cat) ? "primary" : "outline"}
                         >
-                            {label}
+                            {CATEGORIES_TRANSLATIONS[cat] ??
+                                cat.replace(/-/g, " ").replace(/\b\w/g, (m) => m.toUpperCase())}
                         </Button>
-                    );
-                })}
+                    ))}
             </div>
             {selected.length > 0 && (
-                <Button
-                    type="button"
-                    onClick={() => onChange([])}
-                    className="px-3 py-1 rounded-2xl border bg-white"
-                >
+                <Button variant="secondary" onClick={() => onChange([])}>
                     Limpiar
                 </Button>
             )}

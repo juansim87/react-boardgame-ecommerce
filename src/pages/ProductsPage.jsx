@@ -1,62 +1,41 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Card } from "../components/Card";
 import { CategoryChips } from "../components/CategoryChips";
-import { CATEGORY_SLUGS } from "../constants/categories";
-import { api } from "../core/http/axios";
+import { ProductsContext } from "../context/ProductsContext";
 
 export const ProductsPage = () => {
-    const [products, setProducts] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const { products } = useContext(ProductsContext);
+    const [selected, setSelected] = useState([]);
+    const [searchParams] = useSearchParams();
 
     const q = (searchParams.get("q") || "").trim().toLowerCase();
 
-    const cats = searchParams.getAll("cat").filter((c) => CATEGORY_SLUGS.includes(c));
-
-    useEffect(() => {
-        api.get("/products")
-            .then((response) => {
-                setProducts(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching products:", error);
-            });
-    }, []);
-
-    const handleCatsChange = (nextCats) => {
-        const next = new URLSearchParams(searchParams);
-        next.delete("cat");
-        nextCats.forEach((c) => next.append("cat", c));
-        setSearchParams(next);
-    };
-
-    const results = useMemo(() => {
-        const byText = (p) =>
+    const filtered = useMemo(() => {
+        const byText = (product) =>
             !q ||
-            (p.name && p.name.toLowerCase().includes(q)) ||
-            (p.description && p.description.toLowerCase().includes(q));
+            (product.name && product.name.toLowerCase().includes(q)) ||
+            (product.description && product.description.toLowerCase().includes(q));
 
-        const byCats = (p) => {
-            if (!cats.length) return true;
-            const prodCats = Array.isArray(p.category) ? p.category : [];
-            return cats.every((cat) => prodCats.includes(cat));
+        const byCats = (product) => {
+            if (!selected.length) return true;
+            const productCategories = Array.isArray(product.category) ? product.category : [];
+            return selected.every((category) => productCategories.includes(category));
         };
 
-        const filtered = products.filter((p) => byText(p) && byCats(p));
+        console.log("Filtrando por:", q, "Productos totales:", products.length);
+        return products.filter((product) => byText(product) && byCats(product));
+    }, [products, q, selected]);
 
-        return [...filtered].sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
-    }, [products, q, cats]);
     return (
         <div className="perfect-center justify-start min-h-dvh bg-brand-200 p-12 gap-8">
-            <h1>Resultados {q ? `para “${q}”` : ""}</h1>
-
-            <CategoryChips selected={cats} onChange={handleCatsChange} />
-
-            {results.length === 0 ? (
-                <p>No se han encontrado productos{q ? ` para “${q}”` : ""}.</p>
+            <h1>Resultados</h1>
+            <CategoryChips selected={selected} onChange={setSelected} />
+            {products.length <= 0 ? (
+                <p>No hay productos disponibles</p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    {results.map((product) => (
+                    {filtered.map((product) => (
                         <Card key={product._id} product={product} />
                     ))}
                 </div>

@@ -3,6 +3,7 @@ import like from "../assets/icons/like.png";
 import noLike from "../assets/icons/no-like.png";
 import { AuthContext } from "../context/AuthContext";
 import { Button } from "./Button";
+import { EditProductButton } from "./EditProductButton";
 import { Modal } from "./Modal";
 
 export const Card = ({ product }) => {
@@ -39,6 +40,8 @@ export const Card = ({ product }) => {
                 </div>
             )}
 
+            {user && user.role === "admin" && <EditProductButton />}
+
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="md">
                 <div className="p-4 text-center">
                     <img
@@ -52,6 +55,7 @@ export const Card = ({ product }) => {
                     <Button variant="primary" onClick={() => setIsOpen(false)}>
                         Cerrar
                     </Button>
+                    {user && user.role === "admin" && <EditProductButton />}
                 </div>
             </Modal>
         </div>

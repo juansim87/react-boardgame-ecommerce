@@ -17,16 +17,15 @@ export const HomePage = () => {
     }, []);
 
     return (
-        <div className="perfect-center">
+        <div className="perfect-center gap-4">
             {!user ? <CTASignUp /> : <h1>Bienvenido a Ludokracia, {user.username}</h1>}
-            <ProductCarousel title="Novedades" products={products} />
-            <ProductCarousel title="Más vendidos" products={products} />
-            <ProductCarousel title="Populares" products={products} />
             <Link to="/products">
                 <Button variant="primary" role="button">
                     Todos nuestros productos
                 </Button>
             </Link>
+            <ProductCarousel title="Novedades" products={products} />
+            <ProductCarousel title="Populares" products={products} />
         </div>
     );
 };

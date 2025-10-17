@@ -34,7 +34,7 @@ export const Button = ({
         },
         outline: {
             classes:
-                "bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-gray-500",
+                "bg-transparent text-gray-700 border border-gray-400 hover:bg-gray-50 focus:ring-gray-500",
             hasHoverEffects: true,
             shadowColor: null,
         },

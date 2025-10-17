@@ -1,16 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import search from "../assets/icons/search-primary.png";
 
 export const SearchInput = () => {
     const [term, setTerm] = useState("");
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        setTerm(searchParams.get("q") || "");
+    }, [searchParams]);
 
     const onSubmit = (event) => {
         event.preventDefault();
-
+        const next = new URLSearchParams(searchParams);
         const query = term.trim();
-        navigate(query ? `/products?q=${encodeURIComponent(query)}` : "/products");
+
+        if (query) next.set("q", query);
+        else next.delete("q");
+
+        navigate({ pathname: "/products", search: `?${next.toString()}` });
     };
 
     return (
@@ -22,7 +31,7 @@ export const SearchInput = () => {
                 placeholder="Encuentra el juego que buscas"
                 className="w-full text-primary"
             />
-            <button type="submit" className="w-10 bg-gray-300 rounded-4xl cursor-pointer p-1" role="button">
+            <button type="submit" className="w-10 bg-gray-300 rounded-4xl cursor-pointer p-1">
                 <img src={search} alt="Buscar" />
             </button>
         </form>

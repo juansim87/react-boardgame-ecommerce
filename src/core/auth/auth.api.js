@@ -28,6 +28,21 @@ export const registerApi = async (user) => {
     }
 };
 
+export const profileEditApi = async (id, userData) => {
+    try {
+        // console.log(
+        //     `registerApi: ${user.email} y password: ${user.password}, nombre: ${user.name} role: ${user.role}`
+        // );
+        const response = await api.patch(`/users/${id}`, userData);
+        console.log("respuesta de la api", response);
+
+        return response.data;
+    } catch (error) {
+        console.error("Error al registrar usuario:", error);
+        throw error;
+    }
+};
+
 export const logoutApi = async () => {
     try {
         console.log("logoutApi");

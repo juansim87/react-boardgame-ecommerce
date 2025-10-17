@@ -1,3 +1,19 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/Button";
+import { AuthContext } from "../context/AuthContext";
+
 export const ProfilePage = () => {
-    return <div>Profile</div>;
+    const { user } = useContext(AuthContext);
+    console.log(user);
+
+    const navigate = useNavigate();
+    return (
+        <div>
+            <h1>{user?.username}</h1>
+            <Button onClick={() => navigate("/profile/edit")} variant="primary">
+                Editar perfil
+            </Button>
+        </div>
+    );
 };

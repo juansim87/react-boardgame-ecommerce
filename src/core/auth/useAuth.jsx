@@ -1,7 +1,7 @@
 import { useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { getProfileApi, loginApi, logoutApi, registerApi } from "./auth.api";
+import { getProfileApi, loginApi, logoutApi, profileEditApi, registerApi } from "./auth.api";
 import {
     removeTokenFromLocalStorage,
     removeUserFromLocalStorage,
@@ -10,7 +10,7 @@ import {
 } from "./auth.service";
 
 export const useAuth = () => {
-    const { setUser } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const login = useCallback(
@@ -19,6 +19,8 @@ export const useAuth = () => {
             console.log(`Iniciando sesión con email: ${email} y password: ${password}`);
 
             const authData = await loginApi({ email, password });
+
+            console.log("AuthData", authData);
 
             if (authData) {
                 saveTokenInLocalStorage(authData.token);
@@ -29,7 +31,7 @@ export const useAuth = () => {
 
             // Si la API nos dice error, mostramos un mensaje de error
         },
-        [navigate, setUser]
+        [navigate, user]
     );
 
     const logout = async () => {
@@ -42,7 +44,7 @@ export const useAuth = () => {
             console.log("logout del hook", logoutResponse);
             removeUserFromLocalStorage();
             removeTokenFromLocalStorage();
-            setUser(null);
+            setUser(false);
             navigate("/");
         }
     };
@@ -66,6 +68,25 @@ export const useAuth = () => {
         [navigate, setUser]
     );
 
+    const editProfile = useCallback(
+        async (userData) => {
+            // Enviar a la API de autenticación
+
+            const userProfile = await profileEditApi(user.id, userData);
+
+            console.log("Perfil de usuario:", userProfile);
+
+            if (userProfile) {
+                saveUserInLocalStorage(userProfile);
+                setUser(userProfile);
+                navigate("/profile");
+            }
+
+            // Si la API nos dice error, mostramos un mensaje de error
+        },
+        [navigate, setUser]
+    );
+
     const getProfile = useCallback(async () => {
         // Lógica para obtener el usuario actual
         console.log("Obteniendo usuario actual");
@@ -79,5 +100,5 @@ export const useAuth = () => {
         }
     }, []);
 
-    return { login, logout, register, getProfile };
+    return { login, logout, register, getProfile, editProfile };
 };

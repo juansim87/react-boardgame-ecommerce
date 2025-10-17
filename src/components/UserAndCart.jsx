@@ -11,7 +11,6 @@ export const UserAndCart = () => {
     const { pathname } = useLocation();
     const { user } = useContext(AuthContext);
     const { logout } = useAuth();
-    console.log("Usuario:", user);
 
     useEffect(() => {
         const onDocClick = (e) => {
@@ -75,6 +74,13 @@ export const UserAndCart = () => {
                         role="menu"
                         className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
                     >
+                        <Link
+                            to="/profile"
+                            role="menuitem"
+                            className="block rounded-md px-2 py-1 hover:bg-black/5"
+                        >
+                            Perfil
+                        </Link>
                         <Link
                             to="/register"
                             role="menuitem"
