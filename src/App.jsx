@@ -1,7 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { AdminRoute } from "./components/AdminRoute";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AboutPage } from "./pages/AboutPage";
+import { EditProductPage } from "./pages/EditProductPage";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { Page404 } from "./pages/Page404";
@@ -28,6 +30,9 @@ export const App = () => {
                     <Route element={<PrivateRoute />}>
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/profile/edit" element={<ProfileEditPage />} />
+                        <Route element={<AdminRoute />}>
+                            <Route path="/admin/products/edit" element={<EditProductPage />} />
+                        </Route>
                     </Route>
                     <Route path="*" element={<Page404 />} />
                 </Routes>

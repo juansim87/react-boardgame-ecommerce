@@ -28,19 +28,21 @@ export const Card = ({ product }) => {
 
             <p className="mt-2">{product.price} €</p>
 
-            {user && (
-                <div className="flex justify-center gap-4 mt-3">
-                    <Button variant="secondary">Añadir al carrito</Button>
-                    <div
-                        className="w-6 cursor-pointer transition-transform duration-200 hover:scale-110"
-                        onClick={handleLike}
-                    >
-                        <img src={liked ? like : noLike} alt="Like" className="w-full" />
+            <div className="flex perfect-center gap-2">
+                {user && (
+                    <div className="flex items-center gap-5 mt-3">
+                        <Button variant="primary">Añadir al carrito</Button>
+                        <div
+                            className="w-6 cursor-pointer transition-transform duration-200 hover:scale-110"
+                            onClick={handleLike}
+                        >
+                            <img src={liked ? like : noLike} alt="Like" className="w-full" />
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {user && user.role === "admin" && <EditProductButton />}
+                {user && user.role === "admin" && <EditProductButton id={product._id} />}
+            </div>
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="md">
                 <div className="p-4 text-center">
@@ -52,10 +54,12 @@ export const Card = ({ product }) => {
                     <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
                     {product.description && <p className="text-gray-700 mb-4">{product.description}</p>}
                     <p className="text-lg font-medium mb-4">{product.price} €</p>
-                    <Button variant="primary" onClick={() => setIsOpen(false)}>
-                        Cerrar
-                    </Button>
-                    {user && user.role === "admin" && <EditProductButton />}
+                    <div className="perfect-center gap-2">
+                        {user && user.role === "admin" && <EditProductButton id={product._id} />}
+                        <Button variant="primary" onClick={() => setIsOpen(false)}>
+                            Cerrar
+                        </Button>
+                    </div>
                 </div>
             </Modal>
         </div>

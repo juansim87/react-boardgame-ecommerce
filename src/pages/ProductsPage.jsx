@@ -23,7 +23,6 @@ export const ProductsPage = () => {
             return selected.every((category) => productCategories.includes(category));
         };
 
-        console.log("Filtrando por:", q, "Productos totales:", products.length);
         return products.filter((product) => byText(product) && byCats(product));
     }, [products, q, selected]);
 
