@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../components/Button";
 import { EditProductForm } from "../components/EditProductForm";
 import { AuthContext } from "../context/AuthContext";
@@ -9,6 +9,7 @@ export const EditProductPage = () => {
     const { user } = useContext(AuthContext);
     const [searchParams, setSearchParams] = useSearchParams();
     const { products } = useContext(ProductsContext);
+    const navigate = useNavigate();
 
     const id = searchParams.get("id");
 
@@ -21,6 +22,9 @@ export const EditProductPage = () => {
     ) : (
         <div>
             <h2>Listado de productos</h2>
+            <Button variant="primary" onClick={() => navigate("/admin/products/create")}>
+                Añadir producto
+            </Button>
             <ul className="w-100 flex flex-col justify-center gap-4">
                 {products
                     .sort((a, b) => a.name.localeCompare(b.name))

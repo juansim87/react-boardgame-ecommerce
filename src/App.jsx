@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { AdminRoute } from "./components/AdminRoute";
+import { CreateProductForm } from "./components/CreateProductForm";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AboutPage } from "./pages/AboutPage";
 import { EditProductPage } from "./pages/EditProductPage";
@@ -32,6 +33,7 @@ export const App = () => {
                         <Route path="/profile/edit" element={<ProfileEditPage />} />
                         <Route element={<AdminRoute />}>
                             <Route path="/admin/products/edit" element={<EditProductPage />} />
+                            <Route path="/admin/products/create" element={<CreateProductForm />} />
                         </Route>
                     </Route>
                     <Route path="*" element={<Page404 />} />

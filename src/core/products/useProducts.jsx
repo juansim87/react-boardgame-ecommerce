@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductsContext } from "../../context/ProductsContext";
-import { getCategoriesApi, getProductsApi, getProductsByIdApi } from "./products.api";
+import { createProductApi, getCategoriesApi, getProductsApi, getProductsByIdApi } from "./products.api";
 import { saveCategoriesInLocalStorage, saveProductsInLocalStorage } from "./products.service";
 
 export const useProducts = () => {
@@ -36,6 +36,21 @@ export const useProducts = () => {
         }
     };
 
+    const createProducts = async (product) => {
+        setLoadingProducts(true);
+        try {
+            const created = await createProductApi(product);
+            await getProducts();
+
+            return created;
+        } catch (error) {
+            console.error("Algo ha salido mal en createProducts(useProducts)", error);
+            throw error;
+        } finally {
+            setLoadingProducts(false);
+        }
+    };
+
     const getCategories = async () => {
         setLoadingCategories(true);
         try {
@@ -52,5 +67,12 @@ export const useProducts = () => {
         }
     };
 
-    return { getProducts, getProductsById, getCategories, loadingProducts, loadingCategories };
+    return {
+        getProducts,
+        getProductsById,
+        getCategories,
+        loadingProducts,
+        loadingCategories,
+        createProducts,
+    };
 };
