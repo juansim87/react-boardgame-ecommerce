@@ -15,9 +15,6 @@ export const useAuth = () => {
 
     const login = useCallback(
         async ({ email, password }) => {
-            // Enviar a la API de autenticación
-            console.log(`Iniciando sesión con email: ${email} y password: ${password}`);
-
             const authData = await loginApi({ email, password });
 
             console.log("AuthData", authData);
@@ -28,14 +25,11 @@ export const useAuth = () => {
                 setUser(authData.user);
                 navigate("/");
             }
-
-            // Si la API nos dice error, mostramos un mensaje de error
         },
         [navigate, user]
     );
 
     const logout = async () => {
-        // Lógica de cierre de sesión
         console.log("Cerrando sesión");
 
         const logoutResponse = await logoutApi();

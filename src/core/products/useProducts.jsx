@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProductContext } from "../../context/ProductsContext";
+import { ProductsContext } from "../../context/ProductsContext";
 import { getCategoriesApi, getProductsApi, getProductsByIdApi } from "./products.api";
 import { saveCategoriesInLocalStorage, saveProductsInLocalStorage } from "./products.service";
 
 export const useProducts = () => {
-    const { setProducts, setCategories } = useContext(ProductContext);
+    const { setProducts, setCategories } = useContext(ProductsContext);
     const [loadingProducts, setLoadingProducts] = useState(false);
     const [loadingCategories, setLoadingCategories] = useState(false);
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const useProducts = () => {
             }
             if (!products.length) return;
         } catch (error) {
-            console.error("Algo ha salido mal en getProducts(useProducts)", err);
+            console.error("Algo ha salido mal en getProducts(useProducts)", error);
         } finally {
             setLoadingProducts(false);
         }

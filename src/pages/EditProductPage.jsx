@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Button } from "../components/Button";
+import { EditProductForm } from "../components/EditProductForm";
 import { AuthContext } from "../context/AuthContext";
 import { ProductsContext } from "../context/ProductsContext";
 
@@ -10,22 +12,22 @@ export const EditProductPage = () => {
 
     const id = searchParams.get("id");
 
-    console.log("Productos:", products);
     if (!user || user.role !== "admin") return <p>Acceso denegado</p>;
 
     return id ? (
-        <p>Editar producto:{id}</p>
+        <div>
+            <EditProductForm />
+        </div>
     ) : (
         <div>
             <h2>Listado de productos</h2>
-            <ul>
+            <ul className="w-100 flex flex-col justify-center gap-4">
                 {products
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((product) => (
-                        <li key={product._id}>
-                            <button onClick={() => setSearchParams({ id: product._id })}>
-                                {product.name}
-                            </button>
+                        <li key={product._id} className="w-full flex justify-between items-center">
+                            {product.name}
+                            <Button onClick={() => setSearchParams({ id: product._id })}>📝​</Button>
                         </li>
                     ))}
             </ul>
