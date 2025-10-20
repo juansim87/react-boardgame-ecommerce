@@ -9,10 +9,13 @@ export const ProfilePage = () => {
 
     const navigate = useNavigate();
     return (
-        <div>
+        <div className="perfect-center gap-4">
             <h1>{user?.username}</h1>
             <Button onClick={() => navigate("/profile/edit")} variant="primary">
                 Editar perfil
+            </Button>
+            <Button onClick={() => navigate("/")} variant="secondary">
+                Volver a la página principal
             </Button>
         </div>
     );

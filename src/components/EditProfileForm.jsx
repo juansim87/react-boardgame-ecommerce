@@ -73,6 +73,17 @@ const EDIT_PROFILE_FIELDS = [
         },
         label: { text: "Dirección", className: "" },
     },
+    {
+        containerClass: "flex flex-col gap-2",
+        input: {
+            name: "avatar",
+            type: "text",
+            placeholder: "Ruta de la imagen",
+            label: "Avatar",
+            required: false,
+        },
+        label: { text: "Avatar", className: "" },
+    },
 ];
 
 export const EditProfileForm = () => {
@@ -86,6 +97,7 @@ export const EditProfileForm = () => {
         phoneNumber: user?.phoneNumber || "",
         bio: user?.bio || "",
         address: user?.address || "",
+        avatar: user?.avatar || "",
     };
 
     const [form, setForm] = useState(INITIAL_PROFILE);
