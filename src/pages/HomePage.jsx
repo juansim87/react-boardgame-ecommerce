@@ -1,20 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
 import { CTASignUp } from "../components/CTASignUp";
 import { ProductCarousel } from "../components/ProductCarousel";
 import { AuthContext } from "../context/AuthContext";
-import { api } from "../core/http/axios";
+import { ProductsContext } from "../context/ProductsContext";
 
 export const HomePage = () => {
-    const [products, setProducts] = useState([]);
+    const { products } = useContext(ProductsContext);
     const { user } = useContext(AuthContext);
-
-    useEffect(() => {
-        api.get("/products")
-            .then((response) => setProducts(response.data))
-            .catch((error) => console.error("Error fetching products:", error));
-    }, []);
 
     return (
         <div className="perfect-center gap-4">

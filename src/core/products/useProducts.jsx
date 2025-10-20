@@ -1,7 +1,13 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductsContext } from "../../context/ProductsContext";
-import { createProductApi, getCategoriesApi, getProductsApi, getProductsByIdApi } from "./products.api";
+import {
+    createProductApi,
+    deleteProductApi,
+    getCategoriesApi,
+    getProductsApi,
+    getProductsByIdApi,
+} from "./products.api";
 import { saveCategoriesInLocalStorage, saveProductsInLocalStorage } from "./products.service";
 
 export const useProducts = () => {
@@ -51,6 +57,11 @@ export const useProducts = () => {
         }
     };
 
+    const deleteProduct = async (id) => {
+        await deleteProductApi(id);
+        await getProducts();
+    };
+
     const getCategories = async () => {
         setLoadingCategories(true);
         try {
@@ -74,5 +85,6 @@ export const useProducts = () => {
         loadingProducts,
         loadingCategories,
         createProducts,
+        deleteProduct,
     };
 };

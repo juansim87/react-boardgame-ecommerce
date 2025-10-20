@@ -35,8 +35,12 @@ export const ProductsProvider = ({ children }) => {
         }
     }, []);
 
+    const removeProduct = (id) => {
+        setProducts((prev) => prev.filter((p) => p._id !== id));
+    };
+
     return (
-        <ProductsContext value={{ products, setProducts, categories, setCategories }}>
+        <ProductsContext value={{ products, setProducts, categories, setCategories, removeProduct }}>
             {children}
         </ProductsContext>
     );

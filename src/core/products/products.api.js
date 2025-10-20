@@ -35,12 +35,17 @@ export const createProductApi = async (product) => {
         const response = await api.post("/products", product);
         return response.data;
     } catch (error) {
-        // si tienes axios:
         const status = error?.response?.status;
         const data = error?.response?.data;
         console.error("[API ERROR]", status, data);
         throw error;
     }
+};
+
+export const deleteProductApi = async (id) => {
+    if (!id) throw new Error("ID requerido");
+    const { data } = await api.delete(`/products/${id}`);
+    return data;
 };
 
 export const getCategoriesApi = async () => {

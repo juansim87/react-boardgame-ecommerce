@@ -1,18 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "./Button";
 
 export const EditProductButton = ({ id }) => {
-    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const handleEdit = (event) => {
+        event.preventDefault();
         event?.stopPropagation?.();
-        navigate(`/admin/products/edit?id=${id}`);
+        setSearchParams({ id });
     };
 
-    console.log("[EditProductButton] id prop:", id);
     return (
-        <Button variant="secondary" onClick={handleEdit}>
-            Editar Producto
+        <Button variant="secondary" onClick={handleEdit} title="Editar">
+            Editar 📝
         </Button>
     );
 };
