@@ -9,8 +9,8 @@ import { Container } from "./Container";
 import { FormInput } from "./FormInput";
 
 export const EditProductForm = () => {
-    const { products } = useContext(ProductsContext);
-    const { getProducts } = useProducts();
+    const { products, categories = [] } = useContext(ProductsContext);
+    const { getProducts, getCategories } = useProducts();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [form, setForm] = useState({});
@@ -72,37 +72,38 @@ export const EditProductForm = () => {
     };
 
     return (
-        <Container className="flex items-center justify-center min-h-[70vh] max-w-element-width-landing-md">
-            <div className="flex flex-col gap-landing-md w-full bg-white rounded-2xl shadow-landing-lg p-8">
-                <h2 className="text-primary">{productSelected?.name || "Editar producto"}</h2>
-                <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-                    {PRODUCT_FIELDS_FORM.map(({ label, input, containerClass }) => {
-                        return (
-                            <FormInput
-                                key={input.name}
-                                containerClass={containerClass}
-                                input={{
-                                    name: input.name,
-                                    type: input.type,
-                                    placeholder: input.placeholder,
-                                    value: form[input.name],
-                                    onChange: onInputChange,
-                                    required: input.required,
-                                    readOnly: input.readOnly,
-                                }}
-                                label={{
-                                    text: label.text,
-                                    className: label.className,
-                                }}
-                            />
-                        );
-                    })}
-
-                    <Button type="submit" className="w-full mt-2 justify-center rounded-full">
-                        Guardar
-                    </Button>
-                </form>
+        <Container className="flex items-center justify-center min-h-[70vh] w-200 bg-primary-light p-4 gap-5">
+            <h2 className="text-primary">{productSelected?.name || "Editar producto"}</h2>
+            <div className="w-50">
+                <img src={form.images} className="w-full" />
             </div>
+            <form className="flex flex-col gap-5" onSubmit={onSubmit}>
+                {PRODUCT_FIELDS_FORM.map(({ label, input, containerClass }) => {
+                    return (
+                        <FormInput
+                            key={input.name}
+                            containerClass={containerClass}
+                            input={{
+                                name: input.name,
+                                type: input.type,
+                                placeholder: input.placeholder,
+                                value: form[input.name],
+                                onChange: onInputChange,
+                                required: input.required,
+                                readOnly: input.readOnly,
+                            }}
+                            label={{
+                                text: label.text,
+                                className: label.className,
+                            }}
+                        />
+                    );
+                })}
+
+                <Button type="submit" className="w-full mt-2 justify-center rounded-full">
+                    Guardar
+                </Button>
+            </form>
         </Container>
     );
 };

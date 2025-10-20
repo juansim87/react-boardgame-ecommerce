@@ -40,7 +40,7 @@ export const UserAndCart = () => {
                     className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 >
                     <img
-                        src={user ? user.avatar : userIcon}
+                        src={user?.avatar ? user?.avatar : userIcon}
                         alt="Usuario"
                         className="w-full h-full object-contain rounded-4xl"
                     />
@@ -49,7 +49,7 @@ export const UserAndCart = () => {
                 {isOpen && !user && (
                     <div
                         role="menu"
-                        className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
+                        className="absolute right-0 top-[110%] w-min-50 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
                     >
                         <Link
                             to="/login"
@@ -69,6 +69,7 @@ export const UserAndCart = () => {
                         </Link>
                     </div>
                 )}
+
                 {isOpen && user && (
                     <div
                         role="menu"
@@ -81,6 +82,15 @@ export const UserAndCart = () => {
                         >
                             Perfil
                         </Link>
+                        {user.role === "admin" && (
+                            <Link
+                                to="/admin/products/edit"
+                                role="menuitem"
+                                className="block rounded-md px-2 py-1 hover:bg-black/5"
+                            >
+                                Editar productos
+                            </Link>
+                        )}
                         <Link
                             to="/register"
                             role="menuitem"

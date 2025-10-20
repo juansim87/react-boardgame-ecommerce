@@ -67,7 +67,7 @@ export const CreateProductForm = () => {
     };
 
     return (
-        <Container>
+        <Container className="flex items-center justify-center min-h-[70vh] max-w-element-width-landing-md">
             <h2>Añadir Producto</h2>
             <form className="flex flex-col gap-5" onSubmit={onSubmit}>
                 {PRODUCT_FIELDS_FORM.map(({ label, input, containerClass }) => {

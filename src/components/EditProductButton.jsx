@@ -1,13 +1,13 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./Button";
 
 export const EditProductButton = ({ id }) => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     const handleEdit = (event) => {
         event.preventDefault();
         event?.stopPropagation?.();
-        setSearchParams({ id });
+        navigate(`/admin/products/edit?id=${id}`);
     };
 
     return (

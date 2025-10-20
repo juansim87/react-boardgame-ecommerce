@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { AdminRoute } from "./components/AdminRoute";
 import { CreateProductForm } from "./components/CreateProductForm";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AboutPage } from "./pages/AboutPage";
@@ -12,6 +11,7 @@ import { ProductsPage } from "./pages/ProductsPage";
 import { ProfileEditPage } from "./pages/ProfileEditPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { AdminRoute } from "./router/AdminRoute";
 import { Footer } from "./sections/Footer";
 import { Header } from "./sections/Header";
 import { MainBox } from "./sections/MainBox";
@@ -23,7 +23,6 @@ export const App = () => {
             <MainBox>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/register" element={<RegisterPage />} />
