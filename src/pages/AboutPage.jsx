@@ -1,3 +1,3 @@
 export const AboutPage = () => {
-    return <div></div>;
+    return <div>Aquí viene el About</div>;
 };
