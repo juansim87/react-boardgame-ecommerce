@@ -30,12 +30,9 @@ export const useAuth = () => {
     );
 
     const logout = async () => {
-        console.log("Cerrando sesión");
-
         const logoutResponse = await logoutApi();
 
         if (logoutResponse?.logout) {
-            console.log("logout del hook", logoutResponse);
             removeUserFromLocalStorage();
             removeTokenFromLocalStorage();
             setUser(false);
@@ -45,9 +42,6 @@ export const useAuth = () => {
 
     const register = useCallback(
         async (user) => {
-            // Enviar a la API de autenticación
-            console.log(`Registrando al usuario: ${user.email} y password: ${user.password}`);
-
             const authData = await registerApi(user);
 
             if (authData) {
@@ -56,35 +50,24 @@ export const useAuth = () => {
                 setUser(authData.user);
                 navigate("/");
             }
-
-            // Si la API nos dice error, mostramos un mensaje de error
         },
         [navigate, setUser]
     );
 
     const editProfile = useCallback(
         async (userData) => {
-            // Enviar a la API de autenticación
-
             const userProfile = await profileEditApi(user.id, userData);
-
-            console.log("Perfil de usuario:", userProfile);
 
             if (userProfile) {
                 saveUserInLocalStorage(userProfile);
                 setUser(userProfile);
                 navigate("/profile");
             }
-
-            // Si la API nos dice error, mostramos un mensaje de error
         },
         [navigate, setUser]
     );
 
     const getProfile = useCallback(async () => {
-        // Lógica para obtener el usuario actual
-        console.log("Obteniendo usuario actual");
-
         const { user } = await getProfileApi();
 
         if (user) {

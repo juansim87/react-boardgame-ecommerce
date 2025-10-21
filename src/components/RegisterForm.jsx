@@ -4,7 +4,7 @@ import { Button } from "./Button";
 import { Container } from "./Container";
 import { FormInput } from "./FormInput";
 
-const INITIAL_FORM = { email: "", password: "", role: "", name: "" };
+const INITIAL_FORM = { email: "", password: "", role: "user", name: "" };
 
 const REGISTER_FORM_FIELDS = [
     {
@@ -13,7 +13,6 @@ const REGISTER_FORM_FIELDS = [
             name: "name",
             type: "text",
             placeholder: "Juan Perez",
-            label: "Nombre completo",
             required: true,
         },
         label: {
@@ -27,7 +26,6 @@ const REGISTER_FORM_FIELDS = [
             name: "email",
             type: "email",
             placeholder: "admin@admin.com",
-            label: "Email",
             required: true,
         },
         label: {
@@ -48,20 +46,6 @@ const REGISTER_FORM_FIELDS = [
             className: "",
         },
     },
-    {
-        containerClass: "flex flex-col gap-2",
-        input: {
-            name: "role",
-            type: "text",
-            placeholder: "admin",
-            label: "Rol (admin/user)",
-            required: true,
-        },
-        label: {
-            text: "Rol (admin/user)",
-            className: "",
-        },
-    },
 ];
 
 export const RegisterForm = ({}) => {
@@ -75,41 +59,39 @@ export const RegisterForm = ({}) => {
 
     const onRegisterSubmit = async (event) => {
         event.preventDefault();
-        alert(`Email:  ${form.email}\nPassword: ${form.password}, role: ${form.role} nombre: ${form.name}`);
+        alert(`Email:  ${form.email}\nPassword: ${form.password}, nombre: ${form.name}`);
         await register(form);
         setForm(INITIAL_FORM);
     };
 
     return (
-        <Container className="flex items-center justify-center min-h-[70vh] max-w-element-width-landing-md">
-            <div className="flex flex-col gap-landing-md w-full bg-white rounded-2xl shadow-landing-lg p-8">
-                <h2 className="text-primary">Registro</h2>
+        <Container className="flex items-center justify-center min-h-[70vh] max-w-element-width-landing-md gap-4">
+            <h2 className="text-primary">Registro</h2>
 
-                <form className="flex flex-col gap-5" onSubmit={onRegisterSubmit}>
-                    {REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => (
-                        <FormInput
-                            key={input.name}
-                            containerClass={containerClass}
-                            input={{
-                                name: input.name,
-                                type: input.type,
-                                placeholder: input.placeholder,
-                                value: form[input.name],
-                                onChange: onInputChange,
-                                required: input.required,
-                            }}
-                            label={{
-                                text: label.text,
-                                className: label.className,
-                            }}
-                        />
-                    ))}
+            <form className="flex flex-col gap-5" onSubmit={onRegisterSubmit}>
+                {REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => (
+                    <FormInput
+                        key={input.name}
+                        containerClass={containerClass}
+                        input={{
+                            name: input.name,
+                            type: input.type,
+                            placeholder: input.placeholder,
+                            value: form[input.name],
+                            onChange: onInputChange,
+                            required: input.required,
+                        }}
+                        label={{
+                            text: label.text,
+                            className: label.className,
+                        }}
+                    />
+                ))}
 
-                    <Button type="submit" className="w-full mt-2 justify-center rounded-full">
-                        Entrar
-                    </Button>
-                </form>
-            </div>
+                <Button type="submit" className="w-full mt-2 justify-center rounded-full">
+                    Entrar
+                </Button>
+            </form>
         </Container>
     );
 };

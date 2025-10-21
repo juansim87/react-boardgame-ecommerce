@@ -47,7 +47,6 @@ export const LoginForm = () => {
 
     const onLoginSubmit = async (event) => {
         event.preventDefault();
-        alert(`Email: ${form.email}\nPassword: ${form.password}`);
         await login(form);
         setForm(INITIAL_FORM);
     };

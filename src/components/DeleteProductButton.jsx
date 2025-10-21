@@ -18,11 +18,17 @@ export const DeleteProductButton = ({ id, name }) => {
             await deleteProductApi(id);
             removeProduct(id);
             alert(`"${name || id}" borrado correctamente.`);
-        } catch (err) {
-            console.error(err);
-            alert("Error al borrar el producto");
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            const status = error?.response?.status;
+
+            if (status === 404) {
+                console.warn("El producto ya no existe en la API, limpiando localmente...");
+                removeProduct(id); // 🧹 se elimina igual del contexto y localStorage
+                alert(`"${name || id}" ya no existía en la API, se ha eliminado localmente.`);
+            } else {
+                console.error("Error al borrar el producto:", error);
+                alert("No se pudo eliminar el producto. Revisa la consola.");
+            }
         }
     };
 

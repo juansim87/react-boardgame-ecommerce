@@ -3,6 +3,7 @@ import { getCategoriesApi, getProductsApi } from "../core/products/products.api"
 import {
     getCategoriesFromLocalStorage,
     getProductsFromLocalStorage,
+    saveProductsInLocalStorage,
 } from "../core/products/products.service";
 
 export const ProductsContext = createContext(null);
@@ -38,6 +39,12 @@ export const ProductsProvider = ({ children }) => {
     const removeProduct = (id) => {
         setProducts((prev) => prev.filter((p) => p._id !== id));
     };
+
+    useEffect(() => {
+        if (products && products.length >= 0) {
+            saveProductsInLocalStorage(products);
+        }
+    }, [products]);
 
     return (
         <ProductsContext value={{ products, setProducts, categories, setCategories, removeProduct }}>
