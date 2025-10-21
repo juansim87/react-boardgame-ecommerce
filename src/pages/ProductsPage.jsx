@@ -34,9 +34,12 @@ export const ProductsPage = () => {
                 <p>No hay productos disponibles</p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    {filtered.map((product) => (
-                        <Card key={product._id} product={product} />
-                    ))}
+                    {filtered
+                        .slice()
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((product) => (
+                            <Card key={product._id} product={product} />
+                        ))}
                 </div>
             )}
         </div>
