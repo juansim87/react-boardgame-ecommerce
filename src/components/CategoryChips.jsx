@@ -1,16 +1,7 @@
 import { useContext } from "react";
+import { CATEGORY_LABEL } from "../constants/categories";
 import { ProductsContext } from "../context/ProductsContext";
 import { Button } from "./Button";
-
-const CATEGORIES_TRANSLATIONS = {
-    accessories: "Accesorios para juegos",
-    family: "Juegos familiares",
-    "hidden-role": "Juegos de rol oculto",
-    strategy: "Juegos de estrategia",
-    party: "Juegos de fiesta",
-    cooperative: "Juegos cooperativos",
-    "deck-building": "Construcción de mazos",
-};
 
 export const CategoryChips = ({ selected = [], onChange }) => {
     const { categories } = useContext(ProductsContext);
@@ -22,21 +13,30 @@ export const CategoryChips = ({ selected = [], onChange }) => {
         onChange(next);
     };
 
+    const labelFor = (slug) =>
+        CATEGORY_LABEL[slug] ?? slug.replace(/-/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
+
+    const sorted = (categories ?? []).slice().sort((a, b) => {
+        const la = labelFor(a);
+        const lb = labelFor(b);
+        return la.localeCompare(lb, "es", { sensitivity: "base" });
+    });
+
     return (
         <div className="perfect-center gap-2">
-            <div className="flex items-center gap-2 ">
-                {categories?.length > 0 &&
-                    categories.map((cat) => (
-                        <Button
-                            key={cat}
-                            onClick={() => toggle(cat)}
-                            variant={selected.includes(cat) ? "primary" : "outline"}
-                        >
-                            {CATEGORIES_TRANSLATIONS[cat] ??
-                                cat.replace(/-/g, " ").replace(/\b\w/g, (m) => m.toUpperCase())}
-                        </Button>
-                    ))}
+            <div className="flex items-center gap-2">
+                {sorted.map((slug) => (
+                    <Button
+                        key={slug}
+                        onClick={() => toggle(slug)}
+                        variant={selected.includes(slug) ? "primary" : "outline"}
+                        aria-pressed={selected.includes(slug)}
+                    >
+                        {labelFor(slug)}
+                    </Button>
+                ))}
             </div>
+
             {selected.length > 0 && (
                 <Button variant="secondary" onClick={() => onChange([])}>
                     Limpiar

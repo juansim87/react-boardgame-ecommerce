@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { CATEGORY_LABEL } from "../constants/categories";
 import { PRODUCT_FIELDS_FORM } from "../constants/product_fields_form";
 import { ProductsContext } from "../context/ProductsContext";
 import { editProductApi } from "../core/products/products.api";
@@ -14,6 +15,16 @@ export const EditProductForm = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [form, setForm] = useState({});
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+    const labelFor = (slug) =>
+        CATEGORY_LABEL[slug] ?? slug.replace(/-/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
+
+    const toggleCategory = (slug) => {
+        setSelectedCategories((prev) =>
+            prev.includes(slug) ? prev.filter((selection) => selection !== slug) : [...prev, slug]
+        );
+    };
 
     const id = searchParams.get("id");
 
@@ -31,10 +42,15 @@ export const EditProductForm = () => {
             images: Array.isArray(productSelected.images)
                 ? productSelected.images.join(", ")
                 : productSelected.images || "",
-            category: Array.isArray(productSelected.category)
-                ? productSelected.category.join(", ")
-                : productSelected.category || "",
         });
+
+        if (Array.isArray(productSelected.category)) {
+            setSelectedCategories(productSelected.category);
+        } else if (typeof productSelected.category === "string" && productSelected.category.trim() !== "") {
+            setSelectedCategories(productSelected.category.split(",").map((s) => s.trim()));
+        } else {
+            setSelectedCategories([]);
+        }
     }, [productSelected]);
 
     const onInputChange = (event) => {
@@ -55,10 +71,7 @@ export const EditProductForm = () => {
                 .split(",")
                 .map((s) => s.trim())
                 .filter(Boolean),
-            category: form.category
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
+            category: selectedCategories,
         };
 
         try {
@@ -78,27 +91,49 @@ export const EditProductForm = () => {
                 <img src={form.images} className="w-full" />
             </div>
             <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-                {PRODUCT_FIELDS_FORM.map(({ label, input, containerClass }) => {
-                    return (
-                        <FormInput
-                            key={input.name}
-                            containerClass={containerClass}
-                            input={{
-                                name: input.name,
-                                type: input.type,
-                                placeholder: input.placeholder,
-                                value: form[input.name],
-                                onChange: onInputChange,
-                                required: input.required,
-                                readOnly: input.readOnly,
-                            }}
-                            label={{
-                                text: label.text,
-                                className: label.className,
-                            }}
-                        />
-                    );
-                })}
+                {PRODUCT_FIELDS_FORM.filter((filtered) => filtered.input?.name !== "category").map(
+                    ({ label, input, containerClass }) => {
+                        return (
+                            <FormInput
+                                key={input.name}
+                                containerClass={containerClass}
+                                input={{
+                                    name: input.name,
+                                    type: input.type,
+                                    placeholder: input.placeholder,
+                                    value: form[input.name],
+                                    onChange: onInputChange,
+                                    required: input.required,
+                                    readOnly: input.readOnly,
+                                }}
+                                label={{
+                                    text: label.text,
+                                    className: label.className,
+                                }}
+                            />
+                        );
+                    }
+                )}
+                <fieldset className="flex flex-col gap-3">
+                    <legend className="font-semibold">Categorías</legend>
+                    <div className="flex flex-wrap gap-3">
+                        {[...(categories ?? [])]
+                            .slice()
+                            .sort((a, b) =>
+                                labelFor(a).localeCompare(labelFor(b), "es", { sensitivity: "base" })
+                            )
+                            .map((slug) => (
+                                <label key={slug} className="inline-flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedCategories.includes(slug)}
+                                        onChange={() => toggleCategory(slug)}
+                                    />
+                                    <span>{labelFor(slug)}</span>
+                                </label>
+                            ))}
+                    </div>
+                </fieldset>
 
                 <Button type="submit" className="w-full mt-2 justify-center rounded-full">
                     Guardar
