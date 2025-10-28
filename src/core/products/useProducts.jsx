@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ProductsContext } from "../../context/ProductsContext";
 import {
     createProductApi,
@@ -14,7 +13,6 @@ export const useProducts = () => {
     const { setProducts, setCategories } = useContext(ProductsContext);
     const [loadingProducts, setLoadingProducts] = useState(false);
     const [loadingCategories, setLoadingCategories] = useState(false);
-    const navigate = useNavigate();
 
     const getProducts = async () => {
         setLoadingProducts(true);

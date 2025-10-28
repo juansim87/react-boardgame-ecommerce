@@ -19,7 +19,7 @@ export const HomePage = () => {
                 </Button>
             </Link>
             <ProductCarousel title="Novedades" products={products} />
-            <ProductCarousel title="Populares" products={products} />
+            {/* <ProductCarousel title="Populares" products={products} /> */}
         </div>
     );
 };
