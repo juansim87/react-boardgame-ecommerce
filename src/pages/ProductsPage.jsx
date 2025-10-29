@@ -17,6 +17,8 @@ export const ProductsPage = () => {
     const handleClick = (event) => {
         event.preventDefault();
         setIsActive((prev) => !prev);
+        setMinPrice("");
+        setMaxPrice("");
     };
 
     const q = (searchParams.get("q") || "").trim().toLowerCase();
