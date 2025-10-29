@@ -1,13 +1,23 @@
 import { useContext, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { CategoryChips } from "../components/CategoryChips";
+import { PriceFilter } from "../components/PriceFilter";
 import { ProductsContext } from "../context/ProductsContext";
 
 export const ProductsPage = () => {
     const { products } = useContext(ProductsContext);
     const [selected, setSelected] = useState([]);
     const [searchParams] = useSearchParams();
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
+    const [isActive, setIsActive] = useState(false);
+
+    const handleClick = (event) => {
+        event.preventDefault();
+        setIsActive((prev) => !prev);
+    };
 
     const q = (searchParams.get("q") || "").trim().toLowerCase();
 
@@ -23,13 +33,32 @@ export const ProductsPage = () => {
             return selected.every((category) => productCategories.includes(category));
         };
 
-        return products.filter((product) => byText(product) && byCats(product));
-    }, [products, q, selected]);
+        const byPrice = (product) => {
+            const min = Number(minPrice) || 0;
+            const max = Number(maxPrice) || Infinity;
+            return product.price >= min && product.price <= max;
+        };
+
+        return products.filter((product) => byText(product) && byCats(product) && byPrice(product));
+    }, [products, q, selected, minPrice, maxPrice]);
 
     return (
         <div className="perfect-center justify-start min-h-dvh bg-brand-200 p-12 gap-8">
             <h1>Resultados</h1>
             <CategoryChips selected={selected} onChange={setSelected} />
+            <div className="perfect-center gap-4">
+                <Button onClick={handleClick}>
+                    {isActive ? "Ocultar filtro de precio" : "Mostrar filtro de precio"}
+                </Button>
+                {isActive && (
+                    <PriceFilter
+                        min={minPrice}
+                        max={maxPrice}
+                        onMinChange={setMinPrice}
+                        onMaxChange={setMaxPrice}
+                    />
+                )}
+            </div>
             {products.length <= 0 ? (
                 <p>No hay productos disponibles</p>
             ) : (
