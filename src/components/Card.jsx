@@ -10,8 +10,16 @@ export const Card = ({ product }) => {
     const [liked, setLiked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const { user } = useContext(AuthContext);
+    const [favorites, setFavorites] = useState([user.favoritos]);
 
-    const handleLike = () => setLiked((prev) => !prev);
+    const handleLike = (product) => {
+        setLiked((prev) => !prev);
+        if (favorites.includes(product.name)) {
+            console.log("El producto ya está añadido");
+        } else {
+            console.log(product.name);
+        }
+    };
 
     const mainImage = Array.isArray(product.images) ? product.images[0] : product.images;
 
