@@ -17,13 +17,11 @@ export const useAuth = () => {
         async ({ email, password }) => {
             const authData = await loginApi({ email, password });
 
-            console.log("AuthData", authData);
-
             if (authData) {
                 saveTokenInLocalStorage(authData.token);
                 saveUserInLocalStorage(authData.user);
                 setUser(authData.user);
-                navigate("/");
+                navigate("/user");
             }
         },
         [navigate, user]
@@ -48,7 +46,7 @@ export const useAuth = () => {
                 saveTokenInLocalStorage(authData.token);
                 saveUserInLocalStorage(authData.user);
                 setUser(authData.user);
-                navigate("/");
+                navigate("/user");
             }
         },
         [navigate, setUser]
@@ -61,7 +59,7 @@ export const useAuth = () => {
             if (userProfile) {
                 saveUserInLocalStorage(userProfile);
                 setUser(userProfile);
-                navigate("/profile");
+                navigate("/user/profile");
             }
         },
         [navigate, setUser]

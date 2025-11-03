@@ -1,42 +1,39 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import trolly from "../assets/icons/trolly.png";
 import userIcon from "../assets/icons/user-icon.png";
 import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 import { useAuth } from "../core/auth/useAuth";
+import { useDropdown } from "../hooks/useDropdown";
 
 export const UserAndCart = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const userRef = useRef(null);
     const { pathname } = useLocation();
     const { user } = useContext(AuthContext);
+    const { cart, clearCart } = useContext(CartContext);
     const { logout } = useAuth();
+    const userDropdown = useDropdown();
+    const cartDropdown = useDropdown();
+
+    const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
     useEffect(() => {
-        const onDocClick = (e) => {
-            if (isOpen && userRef.current && !userRef.current.contains(e.target)) setIsOpen(false);
-        };
-        const onKey = (e) => e.key === "Escape" && setIsOpen(false);
-        document.addEventListener("click", onDocClick);
-        document.addEventListener("keydown", onKey);
-        return () => {
-            document.removeEventListener("click", onDocClick);
-            document.removeEventListener("keydown", onKey);
-        };
-    }, [isOpen]);
-
-    useEffect(() => {
-        setIsOpen(false);
+        userDropdown.setIsOpen(false);
+        cartDropdown.setIsOpen(false);
     }, [pathname]);
 
     return (
         <div className="align-row gap-sm">
-            <div ref={userRef} className="relative">
+            {/* --- MENÚ USUARIO --- */}
+            <div ref={userDropdown.ref} className="relative">
                 <button
                     type="button"
                     aria-haspopup="menu"
-                    aria-expanded={isOpen}
-                    onClick={() => setIsOpen((o) => !o)}
+                    aria-expanded={userDropdown.isOpen}
+                    onClick={() => {
+                        userDropdown.setIsOpen((o) => !o);
+                        cartDropdown.setIsOpen(false);
+                    }}
                     className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 >
                     <img
@@ -46,7 +43,7 @@ export const UserAndCart = () => {
                     />
                 </button>
 
-                {isOpen && !user && (
+                {userDropdown.isOpen && !user && (
                     <div
                         role="menu"
                         className="absolute right-0 top-[110%] w-min-50 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
@@ -55,7 +52,7 @@ export const UserAndCart = () => {
                             to="/login"
                             role="menuitem"
                             className="block text-brand-400 rounded-md px-2 py-1 hover:bg-black/5"
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => userDropdown.setIsOpen(false)}
                         >
                             Iniciar sesión
                         </Link>
@@ -63,22 +60,31 @@ export const UserAndCart = () => {
                             to="/register"
                             role="menuitem"
                             className="block rounded-md px-2 py-1 hover:bg-black/5"
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => userDropdown.setIsOpen(false)}
                         >
                             Registrarse
                         </Link>
                     </div>
                 )}
 
-                {isOpen && user && (
+                {userDropdown.isOpen && user && (
                     <div
                         role="menu"
                         className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
                     >
                         <Link
-                            to="/profile"
+                            to="/user"
                             role="menuitem"
                             className="block rounded-md px-2 py-1 hover:bg-black/5"
+                            onClick={() => userDropdown.setIsOpen(false)}
+                        >
+                            Mi cuenta
+                        </Link>
+                        <Link
+                            to="/user/profile"
+                            role="menuitem"
+                            className="block rounded-md px-2 py-1 hover:bg-black/5"
+                            onClick={() => userDropdown.setIsOpen(false)}
                         >
                             Perfil
                         </Link>
@@ -87,6 +93,7 @@ export const UserAndCart = () => {
                                 to="/admin/products/edit"
                                 role="menuitem"
                                 className="block rounded-md px-2 py-1 hover:bg-black/5"
+                                onClick={() => userDropdown.setIsOpen(false)}
                             >
                                 Editar productos
                             </Link>
@@ -103,14 +110,55 @@ export const UserAndCart = () => {
                 )}
             </div>
 
+            {/* --- MENÚ CARRITO --- */}
             {user && (
-                <button
-                    type="button"
-                    className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
-                </button>
+                <div className="relative" ref={cartDropdown.ref}>
+                    <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={cartDropdown.isOpen}
+                        onClick={() => {
+                            cartDropdown.setIsOpen((o) => !o);
+                            userDropdown.setIsOpen(false);
+                        }}
+                        className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
+                    >
+                        <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
+
+                        {totalItems > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-brand-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                {totalItems}
+                            </span>
+                        )}
+                    </button>
+
+                    {cartDropdown.isOpen && (
+                        <div
+                            role="menu"
+                            className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
+                        >
+                            <Link
+                                to="/cart"
+                                role="menuitem"
+                                className="block rounded-md px-2 py-1 hover:bg-black/5"
+                                onClick={() => cartDropdown.setIsOpen(false)}
+                            >
+                                Mostrar carrito
+                            </Link>
+                            <button
+                                type="button"
+                                role="menuitem"
+                                className="block w-full text-left text-error-900 rounded-md px-2 py-1 hover:bg-black/5"
+                                onClick={() => {
+                                    clearCart();
+                                    cartDropdown.setIsOpen(false);
+                                }}
+                            >
+                                Vaciar carrito
+                            </button>
+                        </div>
+                    )}
+                </div>
             )}
         </div>
     );

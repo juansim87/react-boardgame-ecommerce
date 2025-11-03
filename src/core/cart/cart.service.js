@@ -1,4 +1,4 @@
-import { saveDataInStorage } from "../../helpers/storage";
+import { getDataFromStorage, removeFromStorage, saveDataInStorage } from "../../helpers/storage";
 
 export const saveCartInLocalStorage = (cart) => {
     saveDataInStorage("cart", cart);
@@ -12,14 +12,14 @@ export const removeCartFromLocalStorage = () => {
     removeFromStorage("cart");
 };
 
-export const saveCartSummaryInLocalStorage = (cartSummary) => {
-    saveDataInStorage("cartSummary", cartSummary);
-};
+// export const saveCartSummaryInLocalStorage = (cartSummary) => {
+//     saveDataInStorage("cartSummary", cartSummary);
+// };
 
-export const getCartSummaryFromLocalStorage = () => {
-    return getDaraFromStorage("cartSummary");
-};
+// export const getCartSummaryFromLocalStorate = () => {
+//     return getDaraFromStorage("cartSummary");
+// };
 
-export const removeCartSummaryFromLocalStorage = () => {
-    removeFromStorage("cartSummary");
-};
+// export const removeCartSummaryFromLocalStorage = () => {
+//     removeFromStorage("cartSummary");
+// };

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import like from "../assets/icons/like.png";
 import noLike from "../assets/icons/no-like.png";
 import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 import { Button } from "./Button";
 import { EditProductButton } from "./EditProductButton";
 import { Modal } from "./Modal";
@@ -11,6 +12,7 @@ export const Card = ({ product }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { user } = useContext(AuthContext);
     const [favorites, setFavorites] = useState([user.favoritos]);
+    const { addItem, removeItem } = useContext(CartContext);
 
     const handleLike = (product) => {
         setLiked((prev) => !prev);
@@ -39,7 +41,10 @@ export const Card = ({ product }) => {
             <div className="flex perfect-center gap-2">
                 {user && (
                     <div className="flex items-center gap-5 mt-3">
-                        <Button variant="primary">Añadir al carrito</Button>
+                        <Button variant="primary" onClick={() => addItem(product)}>
+                            Añadir al carrito
+                        </Button>
+                        <Button onClick={() => removeItem(product._id)}>Eliminar del carrito</Button>
                         <div
                             className="w-6 cursor-pointer transition-transform duration-200 hover:scale-110"
                             onClick={handleLike}

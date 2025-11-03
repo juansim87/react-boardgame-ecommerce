@@ -15,7 +15,7 @@ export const ProfilePage = () => {
                 <img src={user?.avatar} className="w-full rounded-full" />
             </div>
             <div className="align-row gap-2">
-                <Button onClick={() => navigate("/profile/edit")} variant="primary">
+                <Button onClick={() => navigate("/user/profile/edit")} variant="primary">
                     Editar perfil
                 </Button>
                 <Button onClick={() => navigate("/")} variant="secondary">
