@@ -62,7 +62,7 @@ export const UserPage = () => {
 
                         <div className="flex justify-between items-center mt-4">
                             <p className="font-semibold">Total artículos: {totalItems}</p>
-                            <Link to="/cart">
+                            <Link to="/user/cart">
                                 <Button variant="primary">Ver carrito completo</Button>
                             </Link>
                         </div>

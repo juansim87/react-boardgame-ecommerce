@@ -138,7 +138,7 @@ export const UserAndCart = () => {
                             className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
                         >
                             <Link
-                                to="/cart"
+                                to="/user/cart"
                                 role="menuitem"
                                 className="block rounded-md px-2 py-1 hover:bg-black/5"
                                 onClick={() => cartDropdown.setIsOpen(false)}

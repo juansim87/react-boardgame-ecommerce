@@ -51,7 +51,7 @@ export const CartPage = () => {
                             </div>
                         </div>
 
-                        <Button variant="secondary" onClick={() => removeItem(item._id)}>
+                        <Button variant="danger" onClick={() => removeItem(item._id)}>
                             Eliminar
                         </Button>
                     </div>
@@ -59,13 +59,13 @@ export const CartPage = () => {
             </div>
 
             {/* Totales y acciones */}
-            <div className="flex justify-between items-center border-t pt-4">
+            <div className="perfect-center border-t pt-4">
                 <div>
                     <p className="font-medium text-lg">Total artículos: {totalItems}</p>
                     <p className="text-xl font-bold text-brand-700">Total: {totalPrice.toFixed(2)} €</p>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="perfect-center gap-3">
                     <Link to="/products">
                         <Button variant="secondary">Seguir comprando</Button>
                     </Link>

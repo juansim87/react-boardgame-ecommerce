@@ -24,7 +24,7 @@ export const useAuth = () => {
                 navigate("/user");
             }
         },
-        [navigate, user]
+        [navigate, setUser]
     );
 
     const logout = async () => {
@@ -33,7 +33,7 @@ export const useAuth = () => {
         if (logoutResponse?.logout) {
             removeUserFromLocalStorage();
             removeTokenFromLocalStorage();
-            setUser(false);
+            setUser(null);
             navigate("/");
         }
     };
