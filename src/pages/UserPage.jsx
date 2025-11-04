@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
@@ -19,15 +20,11 @@ export const UserPage = () => {
             <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6 flex flex-col items-center gap-4">
                 <h2 className="text-xl font-semibold text-brand-700">👤 Mi cuenta</h2>
                 <div className="w-32 h-32 rounded-full overflow-hidden border">
-                    <img
-                        src={user?.avatar || "https://via.placeholder.com/150"}
-                        alt={user?.username}
-                        className="w-full h-full object-cover"
-                    />
+                    <Avatar src={user?.avatar} name={user?.username || user?.name} sizeClass="w-32 h-32" />
                 </div>
                 <h3 className="text-lg font-medium">{user?.name}</h3>
                 <p className="text-gray-600">{user?.email}</p>
-                <Button onClick={() => navigate("/profile")} variant="primary">
+                <Button onClick={() => navigate("/user/profile")} variant="primary">
                     Ver perfil completo
                 </Button>
             </section>

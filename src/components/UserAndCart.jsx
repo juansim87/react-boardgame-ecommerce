@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { useAuth } from "../core/auth/useAuth";
 import { useDropdown } from "../hooks/useDropdown";
+import { Avatar } from "./Avatar";
 
 export const UserAndCart = () => {
     const { pathname } = useLocation();
@@ -36,11 +37,19 @@ export const UserAndCart = () => {
                     }}
                     className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
                 >
-                    <img
-                        src={user?.avatar ? user?.avatar : userIcon}
-                        alt="Usuario"
-                        className="w-full h-full object-contain rounded-4xl"
-                    />
+                    {user ? (
+                        <Avatar
+                            src={user?.avatar}
+                            name={user?.username || user?.name}
+                            sizeClass="w-12 h-12"
+                        />
+                    ) : (
+                        <img
+                            src={userIcon}
+                            alt="Usuario"
+                            className="w-full h-full object-contain rounded-full border border-gray-300"
+                        />
+                    )}
                 </button>
 
                 {userDropdown.isOpen && !user && (

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
 import { AuthContext } from "../context/AuthContext";
 
@@ -12,7 +13,7 @@ export const ProfilePage = () => {
         <div className="perfect-center gap-4">
             <h1>{user?.username}</h1>
             <div className="w-50 rounded-2xl">
-                <img src={user?.avatar} className="w-full rounded-full" />
+                <Avatar src={user?.avatar} name={user?.username || user?.name} sizeClass="w-32 h-32" />
             </div>
             <div className="align-row gap-2">
                 <Button onClick={() => navigate("/user/profile/edit")} variant="primary">
