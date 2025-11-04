@@ -7,7 +7,7 @@ import { CartContext } from "../context/CartContext";
 
 export const UserPage = () => {
     const { user } = useContext(AuthContext);
-    const { cart } = useContext(CartContext);
+    const { cart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
     const navigate = useNavigate();
 
     // Calcular total de artículos del carrito
@@ -46,9 +46,16 @@ export const UserPage = () => {
                                 />
                                 <div className="flex-1">
                                     <p className="font-medium">{item.name}</p>
-                                    <p className="text-sm text-gray-600">
-                                        {item.quantity} × {item.price.toFixed(2)} €
-                                    </p>
+                                    <p className="text-sm text-gray-600">{item.price.toFixed(2)} €</p>
+                                </div>
+                                <div className="flex items-center gap 2">
+                                    <Button variant="secondary" onClick={() => decreaseQuantity(item._id)}>
+                                        −
+                                    </Button>
+                                    <span className="w-6 text-center">{item.quantity}</span>
+                                    <Button variant="secondary" onClick={() => increaseQuantity(item._id)}>
+                                        +
+                                    </Button>
                                 </div>
                             </div>
                         ))}

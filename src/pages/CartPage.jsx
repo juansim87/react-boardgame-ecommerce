@@ -4,7 +4,7 @@ import { Button } from "../components/Button";
 import { CartContext } from "../context/CartContext";
 
 export const CartPage = () => {
-    const { cart, removeItem, clearCart } = useContext(CartContext);
+    const { cart, clearCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
 
     const { totalItems, totalPrice } = useMemo(() => {
         const items = cart?.items || [];
@@ -47,10 +47,15 @@ export const CartPage = () => {
                                 </p>
                             </div>
                         </div>
-
-                        <Button variant="danger" onClick={() => removeItem(item._id)}>
-                            Eliminar
-                        </Button>
+                        <div className="flex items-center gap-2">
+                            <Button variant="secondary" onClick={() => decreaseQuantity(item._id)}>
+                                −
+                            </Button>
+                            <span className="w-6 text-center">{item.quantity}</span>
+                            <Button variant="secondary" onClick={() => increaseQuantity(item._id)}>
+                                +
+                            </Button>
+                        </div>
                     </div>
                 ))}
             </div>

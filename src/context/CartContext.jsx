@@ -71,6 +71,29 @@ export const CartProvider = ({ children }) => {
         });
     };
 
+    const increaseQuantity = (productId) => {
+        setCart((prevCart) => {
+            if (!prevCart?.items) return prevCart;
+
+            const updatedItems = prevCart.items.map((item) =>
+                item._id === productId ? { ...item, quantity: item.quantity + 1 } : item
+            );
+
+            return { ...prevCart, items: updatedItems };
+        });
+    };
+
+    const decreaseQuantity = (productId) => {
+        setCart((prevCart) => {
+            if (!prevCart.items) return prevCart;
+
+            const updatedItems = prevCart.items
+                .map((item) => (item._id === productId ? { ...item, quantity: item.quantity - 1 } : item))
+                .filter((item) => item.quantity > 0);
+            return { ...prevCart, items: updatedItems };
+        });
+    };
+
     const clearCart = () => {
         setCart({ id: null, items: [] });
         console.log("Carrito vaciado");
@@ -90,6 +113,8 @@ export const CartProvider = ({ children }) => {
                 addItem,
                 removeItem,
                 clearCart,
+                increaseQuantity,
+                decreaseQuantity,
             }}
         >
             {children}
