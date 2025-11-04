@@ -6,7 +6,6 @@ import { CartContext } from "../context/CartContext";
 export const CartPage = () => {
     const { cart, removeItem, clearCart } = useContext(CartContext);
 
-    // Calcular totales (useMemo para optimizar)
     const { totalItems, totalPrice } = useMemo(() => {
         const items = cart?.items || [];
         const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -14,7 +13,6 @@ export const CartPage = () => {
         return { totalItems, totalPrice };
     }, [cart]);
 
-    // Si el carrito está vacío
     if (!cart?.items?.length) {
         return (
             <div className="perfect-center flex-col gap-4 p-8">
@@ -27,11 +25,10 @@ export const CartPage = () => {
     }
 
     return (
-        <div className="flex flex-col gap-6 p-8 max-w-5xl mx-auto">
-            <h1 className="text-2xl font-semibold text-brand-700">🛍️ Carrito de compras</h1>
-
+        <div className="flex gap-10 p-8 max-w-5xl mx-auto">
             {/* Lista de productos */}
             <div className="flex flex-col gap-4">
+                <h1 className="text-2xl font-semibold text-brand-700">Tus pedidos</h1>
                 {cart.items.map((item) => (
                     <div key={item._id} className="flex items-center justify-between border-b pb-3">
                         <div className="flex items-center gap-4">
@@ -59,7 +56,7 @@ export const CartPage = () => {
             </div>
 
             {/* Totales y acciones */}
-            <div className="perfect-center border-t pt-4">
+            <div className="perfect-center pt-4">
                 <div>
                     <p className="font-medium text-lg">Total artículos: {totalItems}</p>
                     <p className="text-xl font-bold text-brand-700">Total: {totalPrice.toFixed(2)} €</p>

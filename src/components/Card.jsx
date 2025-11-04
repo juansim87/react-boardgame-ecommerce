@@ -44,7 +44,7 @@ export const Card = ({ product }) => {
                         <Button variant="primary" onClick={() => addItem(product)}>
                             Añadir al carrito
                         </Button>
-                        <Button onClick={() => removeItem(product._id)}>Eliminar del carrito</Button>
+
                         <div
                             className="w-6 cursor-pointer transition-transform duration-200 hover:scale-110"
                             onClick={handleLike}
