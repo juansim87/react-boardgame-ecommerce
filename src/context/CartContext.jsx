@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({ id: null, items: [] });
     const { user } = useContext(AuthContext);
 
-    //1. Cargar carrito según usuario o invitado
+    //Load cart by user or guest
     useEffect(() => {
         const uid = user?._id || user?.id || "guest";
 
@@ -25,7 +25,50 @@ export const CartProvider = ({ children }) => {
         }
     }, [user]);
 
-    //2. Guardar carrito (invitado y usuarios)
+    //Merge guest cart with user cart when logged
+
+    useEffect(() => {
+        if (!user) return;
+
+        const guestCart = getCartFromLocalStorage("guest");
+        if (!guestCart || !guestCart.items?.length) return;
+
+        const userId = user._id || user.id;
+        const userCart = getCartFromLocalStorage(userId) || { items: [] };
+
+        const fusionMap = new Map();
+
+        userCart.items.forEach((item) => {
+            fusionMap.set(item._id, { ...item });
+        });
+
+        guestCart.items.forEach((item) => {
+            if (fusionMap.has(item._id)) {
+                fusionMap.set(item._id, {
+                    ...fusionMap.get(item._id),
+                    quantity: fusionMap.get(item._id).quantity + item.quantity,
+                });
+            } else {
+                fusionMap.set(item._id, { ...item });
+            }
+        });
+
+        const mergedCart = {
+            id: userId,
+            items: Array.from(fusionMap.values()),
+        };
+
+        console.log("🟢 Carrito fusionado:", mergedCart);
+
+        saveCartInLocalStorage(mergedCart, userId);
+
+        console.log("🗑️ Eliminando cart_guest tras migración");
+        removeCartFromLocalStorage("guest");
+
+        setCart(mergedCart);
+    }, [user]);
+
+    //Save cart (guests and users)
     useEffect(() => {
         const uid = user?._id || user?.id || "guest";
 
@@ -36,57 +79,61 @@ export const CartProvider = ({ children }) => {
         }
     }, [cart, user]);
 
-    //3. Añadir producto
+    // Add products
     const addItem = (product) => {
         if (!product || !product._id) return;
 
         setCart((prevCart) => {
-            const existingItem = prevCart.items.find((i) => i._id === product._id);
+            const existingItem = prevCart.items.find((item) => item._id === product._id);
 
             const updatedItems = existingItem
-                ? prevCart.items.map((i) => (i._id === product._id ? { ...i, quantity: i.quantity + 1 } : i))
+                ? prevCart.items.map((item) =>
+                      item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+                  )
                 : [...prevCart.items, { ...product, quantity: 1 }];
 
             return { ...prevCart, items: updatedItems };
         });
     };
 
-    //4. Eliminar producto
+    // Delete products
     const removeItem = (productId) => {
         if (!productId) return;
 
         setCart((prevCart) => ({
             ...prevCart,
-            items: prevCart.items.filter((i) => i._id !== productId),
+            items: prevCart.items.filter((item) => item._id !== productId),
         }));
     };
 
-    //5. Incrementar cantidad
+    // Increase products
     const increaseQuantity = (productId) => {
         setCart((prevCart) => ({
             ...prevCart,
-            items: prevCart.items.map((i) => (i._id === productId ? { ...i, quantity: i.quantity + 1 } : i)),
+            items: prevCart.items.map((item) =>
+                item._id === productId ? { ...item, quantity: item.quantity + 1 } : item
+            ),
         }));
     };
 
-    //6. Decrementar cantidad
+    // Decrease products
     const decreaseQuantity = (productId) => {
         setCart((prevCart) => ({
             ...prevCart,
             items: prevCart.items
-                .map((i) => (i._id === productId ? { ...i, quantity: i.quantity - 1 } : i))
-                .filter((i) => i.quantity > 0),
+                .map((item) => (item._id === productId ? { ...item, quantity: item.quantity - 1 } : item))
+                .filter((item) => item.quantity > 0),
         }));
     };
 
-    //7. Vaciar carrito
+    //Empty cart
     const clearCart = () => {
         const uid = user?._id || user?.id || "guest";
         removeCartFromLocalStorage(uid);
         setCart({ id: uid, items: [] });
     };
 
-    //8. Total de artículos
+    // Total items
     const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (

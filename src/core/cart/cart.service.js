@@ -2,7 +2,6 @@ import { getDataFromStorage, removeFromStorage, saveDataInStorage } from "../../
 
 const getCartKey = (userId) => {
     const key = userId ? `cart_${userId}` : "cart_guest";
-    console.log("[cart.service] key:", key);
     return key;
 };
 

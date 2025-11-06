@@ -39,7 +39,7 @@ export const Card = ({ product }) => {
             <p className="mt-2">{product.price} €</p>
 
             <div className="flex perfect-center gap-2">
-                {user && (
+                {
                     <div className="flex items-center gap-5 mt-3">
                         <Button variant="primary" onClick={() => addItem(product)}>
                             Añadir al carrito
@@ -52,7 +52,7 @@ export const Card = ({ product }) => {
                             <img src={liked ? like : noLike} alt="Like" className="w-full" />
                         </div>
                     </div>
-                )}
+                }
 
                 {user && user.role === "admin" && <EditProductButton id={product._id} />}
             </div>
