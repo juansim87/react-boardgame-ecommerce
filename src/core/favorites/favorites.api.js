@@ -16,12 +16,23 @@ export const getFavoritesApi = async (userId) => {
 //Add favorite
 
 export const addFavoriteApi = async (userId, productId) => {
+    const safeUserId = userId?.toString();
+    const safeProductId = encodeURIComponent(productId?.toString() || "");
+    const url = `/users/${safeUserId}/favoritos/${safeProductId}`;
+
+    console.log("[FAV API] POST URL →", url);
+
     try {
-        const response = await api.post(`/users/${userId}/favorites/${productId}`);
-        console.log("[FAV API] GET favoritos →", response.data);
+        const response = await api.post(url);
+        console.log("[FAV API] POST favorito →", response.data);
         return response.data.user?.favoritos || [];
     } catch (err) {
-        console.error("[FAV API] Error POST favoritos:", err);
+        console.error("[FAV API] Error POST favoritos:", {
+            message: err?.message,
+            status: err?.response?.status,
+            data: err?.response?.data,
+            url,
+        });
         return null;
     }
 };

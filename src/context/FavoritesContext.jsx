@@ -1,5 +1,6 @@
+// src/context/FavoritesContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
-import { addFavoriteApi, getFavoritesApi } from "../core/favorites/favorites.api";
+import { addFavoriteApi, getFavoritesApi, removeFavoriteApi } from "../core/favorites/favorites.api";
 import { AuthContext } from "./AuthContext";
 
 export const FavoritesContext = createContext(null);
@@ -8,61 +9,68 @@ export const FavoritesProvider = ({ children }) => {
     const { user } = useContext(AuthContext);
     const [favorites, setFavorites] = useState([]);
 
-    // Load favorites when loging
-    useEffect(() => {
-        const loadFavorites = async () => {
-            if (!user?._id) {
-                console.log("[FAV CTX] No hay usuario → favoritos = []");
-                setFavorites([]);
-                return;
-            }
+    const getUserId = () => user?._id || user?.id || null;
 
-            console.log("[FAV CTX] Cargando favoritos del usuario:", user._id);
-            const favs = await getFavoritesApi(user._id);
+    useEffect(() => {
+        const userId = getUserId();
+
+        if (!userId) {
+            console.log("%c[FAV CTX] No hay usuario → favoritos = []", "color: purple;");
+            setFavorites([]);
+            return;
+        }
+
+        const load = async () => {
+            console.log("%c[FAV CTX] Cargando favoritos de usuario:", "color: purple;", userId);
+            const favs = await getFavoritesApi(userId);
+            console.log("%c[FAV CTX] Favoritos cargados:", "color: purple;", favs);
             setFavorites(favs);
         };
 
-        loadFavorites();
+        load();
     }, [user]);
 
-    //Add favorite
-
     const addFavorite = async (productId) => {
-        if (!user?._id) {
-            console.warn("Intento fallido de añadir favorito sin usuario");
+        const userId = getUserId();
+        if (!userId) {
+            console.warn("[FAV CTX] Intento de añadir favorito sin usuario");
             return;
         }
+        console.log("[FAV CTX] ADD favorito:", { userId, productId });
 
-        console.log("Añadiendo favorito");
-
-        const updatedFavs = await addFavoriteApi(user._id, productId);
-
-        if (updatedFavs) {
-            console.log("Favoritos actualizados", updated);
-            setFavorites(updatedFavs);
+        const updated = await addFavoriteApi(userId, productId);
+        if (updated) {
+            console.log("[FAV CTX] Favoritos (ADD) ->", updated);
+            setFavorites(updated);
         }
     };
 
-    //Remove favorite
     const removeFavorite = async (productId) => {
-        if (!user?._id) {
-            console.warn("Intento fallido de eliminar favorito sin usuario");
+        const userId = getUserId();
+        if (!userId) {
+            console.warn("[FAV CTX] Intento fallido de eliminar favorito sin usuario");
             return;
         }
+        console.log("[FAV CTX] DELETE favorito:", { userId, productId });
 
-        const updatedFavs = await addFavoriteApi(user._id, productId);
-        if (updatedFavs) {
-            console.log("Favoritos actualizados (DELETE)", updatedFavs);
-            setFavorites(updatedFavs);
+        const updated = await removeFavoriteApi(userId, productId);
+        if (updated) {
+            console.log("[FAV CTX] Favoritos (DELETE) ->", updated);
+            setFavorites(updated);
         }
     };
 
-    const isFavorite = (productId) => {
-        return favorites.map((p) => p.id === productId || p._id === productId);
-    };
+    const isFavorite = (productId) => favorites.some((p) => p._id === productId || p.id === productId);
 
     return (
-        <FavoritesContext value={{ favorites, addFavorite, removeFavorite, isFavorite }}>
+        <FavoritesContext
+            value={{
+                favorites,
+                addFavorite,
+                removeFavorite,
+                isFavorite,
+            }}
+        >
             {children}
         </FavoritesContext>
     );

@@ -1,27 +1,38 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import like from "../assets/icons/like.png";
 import noLike from "../assets/icons/no-like.png";
+
 import { AuthContext } from "../context/AuthContext";
-import { CartContext } from "../context/CartContext";
 import { FavoritesContext } from "../context/FavoritesContext";
+
+import { CartContext } from "../context/CartContext";
 import { Button } from "./Button";
 import { EditProductButton } from "./EditProductButton";
 import { Modal } from "./Modal";
 
 export const Card = ({ product }) => {
-    const [liked, setLiked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+
+    const navigate = useNavigate();
+
     const { user } = useContext(AuthContext);
     const { addItem } = useContext(CartContext);
     const { isFavorite, addFavorite, removeFavorite } = useContext(FavoritesContext);
 
-    const handleLike = (product) => {
-        setLiked((prev) => !prev);
-        if (favorites.includes(product.name)) {
-            console.log("El producto ya está añadido");
-        } else {
-            console.log(product.name);
+    const liked = isFavorite(product._id || product.id);
+
+    const productId = product._id || product.id;
+
+    const handleLike = () => {
+        if (!user) {
+            console.log("%c[LIKES] Invitado → redirigiendo a Login", "color: orange;");
+            navigate("/login");
+            return;
         }
+
+        liked ? removeFavorite(productId) : addFavorite(productId);
     };
 
     const mainImage = Array.isArray(product.images) ? product.images[0] : product.images;
@@ -40,20 +51,18 @@ export const Card = ({ product }) => {
             <p className="mt-2">{product.price} €</p>
 
             <div className="flex perfect-center gap-2">
-                {
-                    <div className="flex items-center gap-5 mt-3">
-                        <Button variant="primary" onClick={() => addItem(product)}>
-                            Añadir al carrito
-                        </Button>
+                <div className="flex items-center gap-5 mt-3">
+                    <Button variant="primary" onClick={() => addItem(product)}>
+                        Añadir al carrito
+                    </Button>
 
-                        <div
-                            className="w-6 cursor-pointer transition-transform duration-200 hover:scale-110"
-                            onClick={handleLike}
-                        >
-                            <img src={liked ? like : noLike} alt="Like" className="w-full" />
-                        </div>
+                    <div
+                        className="w-6 cursor-pointer transition-transform duration-200 hover:scale-110"
+                        onClick={handleLike}
+                    >
+                        <img src={liked ? like : noLike} alt="Like" className="w-full" />
                     </div>
-                }
+                </div>
 
                 {user && user.role === "admin" && <EditProductButton id={product._id} />}
             </div>
@@ -68,6 +77,7 @@ export const Card = ({ product }) => {
                     <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
                     {product.description && <p className="text-gray-700 mb-4">{product.description}</p>}
                     <p className="text-lg font-medium mb-4">{product.price} €</p>
+
                     <div className="perfect-center gap-2">
                         {user && user.role === "admin" && <EditProductButton id={product._id} />}
                         <Button variant="primary" onClick={() => setIsOpen(false)}>
