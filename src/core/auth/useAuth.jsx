@@ -23,15 +23,11 @@ export const useAuth = () => {
                 setUser(authData.user);
 
                 const redirectPath = localStorage.getItem("redirectAfterLogin");
-                console.log("%c[LOGIN] Usuario autenticado correctamente", "color: green;");
-                console.log("Ruta guardada en redirectAfterLogin:", redirectPath);
 
                 if (redirectPath) {
-                    console.log("Redirigiendo a:", redirectPath);
                     navigate(redirectPath);
                     localStorage.removeItem("redirectAfterLogin");
                 } else {
-                    console.log("No había ruta guardada, redirigiendo a /user");
                     navigate("/user");
                 }
             }

@@ -3,6 +3,7 @@ import like from "../assets/icons/like.png";
 import noLike from "../assets/icons/no-like.png";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 import { Button } from "./Button";
 import { EditProductButton } from "./EditProductButton";
 import { Modal } from "./Modal";
@@ -11,8 +12,8 @@ export const Card = ({ product }) => {
     const [liked, setLiked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const { user } = useContext(AuthContext);
-    const [favorites, setFavorites] = useState(user?.favoritos || []);
-    const { addItem, removeItem } = useContext(CartContext);
+    const { addItem } = useContext(CartContext);
+    const { isFavorite, addFavorite, removeFavorite } = useContext(FavoritesContext);
 
     const handleLike = (product) => {
         setLiked((prev) => !prev);
