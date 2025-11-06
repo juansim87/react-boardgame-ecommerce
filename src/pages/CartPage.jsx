@@ -4,7 +4,7 @@ import { Button } from "../components/Button";
 import { CartContext } from "../context/CartContext";
 
 export const CartPage = () => {
-    const { cart, clearCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
+    const { cart, clearCart, increaseQuantity, decreaseQuantity, removeItem } = useContext(CartContext);
 
     const { totalItems, totalPrice } = useMemo(() => {
         const items = cart?.items || [];
@@ -30,7 +30,7 @@ export const CartPage = () => {
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl font-semibold text-brand-700">Tus pedidos</h1>
                 {cart.items.map((item) => (
-                    <div key={item._id} className="flex items-center justify-between border-b pb-3">
+                    <div key={item._id} className="flex items-center justify-between border-b pb-3 gap-4">
                         <div className="flex items-center gap-4">
                             <img
                                 src={item.images?.[0]}
@@ -47,13 +47,18 @@ export const CartPage = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Button variant="secondary" onClick={() => decreaseQuantity(item._id)}>
-                                −
-                            </Button>
-                            <span className="w-6 text-center">{item.quantity}</span>
-                            <Button variant="secondary" onClick={() => increaseQuantity(item._id)}>
-                                +
+                        <div className="flex gap-2">
+                            <div className="flex items-center gap-2">
+                                <Button variant="secondary" onClick={() => decreaseQuantity(item._id)}>
+                                    −
+                                </Button>
+                                <span className="w-6 text-center">{item.quantity}</span>
+                                <Button variant="secondary" onClick={() => increaseQuantity(item._id)}>
+                                    +
+                                </Button>
+                            </div>
+                            <Button variant="danger" onClick={() => removeItem(item._id)}>
+                                Eliminar
                             </Button>
                         </div>
                     </div>

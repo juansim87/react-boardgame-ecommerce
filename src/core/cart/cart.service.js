@@ -1,25 +1,19 @@
 import { getDataFromStorage, removeFromStorage, saveDataInStorage } from "../../helpers/storage";
 
-export const saveCartInLocalStorage = (cart) => {
-    saveDataInStorage("cart", cart);
+const getCartKey = (userId) => {
+    const key = userId ? `cart_${userId}` : "cart_guest";
+    console.log("[cart.service] key:", key);
+    return key;
 };
 
-export const getCartFromLocalStorage = () => {
-    return getDataFromStorage("cart");
+export const saveCartInLocalStorage = (cart, userId) => {
+    saveDataInStorage(getCartKey(userId), cart);
 };
 
-export const removeCartFromLocalStorage = () => {
-    removeFromStorage("cart");
+export const getCartFromLocalStorage = (userId) => {
+    return getDataFromStorage(getCartKey(userId));
 };
 
-// export const saveCartSummaryInLocalStorage = (cartSummary) => {
-//     saveDataInStorage("cartSummary", cartSummary);
-// };
-
-// export const getCartSummaryFromLocalStorate = () => {
-//     return getDaraFromStorage("cartSummary");
-// };
-
-// export const removeCartSummaryFromLocalStorage = () => {
-//     removeFromStorage("cartSummary");
-// };
+export const removeCartFromLocalStorage = (userId) => {
+    removeFromStorage(getCartKey(userId));
+};

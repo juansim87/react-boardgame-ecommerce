@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import {
     getCartFromLocalStorage,
     removeCartFromLocalStorage,
@@ -9,101 +10,84 @@ export const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({ id: null, items: [] });
-    // const [cartSumary, setCartSummary] = useState(null);
+    const { user } = useContext(AuthContext);
 
+    //1. Cargar carrito según usuario o invitado
     useEffect(() => {
-        const storedCart = getCartFromLocalStorage();
-        storedCart?.items && setCart(storedCart);
-    }, []);
+        const uid = user?._id || user?.id || "guest";
 
-    useEffect(() => {
-        if (cart?.items?.length) {
-            saveCartInLocalStorage(cart);
+        const storedCart = getCartFromLocalStorage(uid);
+
+        if (storedCart?.items) {
+            setCart(storedCart);
         } else {
-            removeCartFromLocalStorage();
+            setCart({ id: uid, items: [] });
         }
-    }, [cart]);
+    }, [user]);
 
-    const addItem = (product) => {
-        if (!product || !product._id) {
-            console.warn("Intento no válido de añadir un producto", product);
-            return;
-        }
-
-        setCart((prevCart) => {
-            const existingItem = prevCart.items.find((item) => item._id === product._id);
-
-            let updatedItems;
-
-            if (existingItem) {
-                updatedItems = prevCart.items.map((item) =>
-                    item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
-                );
-                console.log(`🟢 +1 unidad de ${product.name}. Total: ${existingItem.quantity + 1}`);
-            } else {
-                updatedItems = [...prevCart.items, { ...product, quantity: 1 }];
-                console.log(`🆕 Producto añadido al carrito: ${product.name}`);
-            }
-
-            const updatedCart = { ...prevCart, items: updatedItems };
-            console.log("🛍️ Carrito actualizado:", updatedCart);
-            return updatedCart;
-        });
-    };
-
-    const removeItem = (productId) => {
-        if (!productId) {
-            console.warn("Se ha intentado eliminar el producto sin ID");
-            return;
-        }
-
-        setCart((prevCart) => {
-            const existingItem = prevCart.items.find((item) => item._id === productId);
-
-            if (!existingItem) {
-                console.warn("Nose encontró el producto en el carrito:", productId);
-                return prevCart;
-            }
-
-            const updatedItems = prevCart.items.filter((item) => item._id !== productId);
-            const updatedCart = { ...prevCart, items: updatedItems };
-            return updatedCart;
-        });
-    };
-
-    const increaseQuantity = (productId) => {
-        setCart((prevCart) => {
-            if (!prevCart?.items) return prevCart;
-
-            const updatedItems = prevCart.items.map((item) =>
-                item._id === productId ? { ...item, quantity: item.quantity + 1 } : item
-            );
-
-            return { ...prevCart, items: updatedItems };
-        });
-    };
-
-    const decreaseQuantity = (productId) => {
-        setCart((prevCart) => {
-            if (!prevCart.items) return prevCart;
-
-            const updatedItems = prevCart.items
-                .map((item) => (item._id === productId ? { ...item, quantity: item.quantity - 1 } : item))
-                .filter((item) => item.quantity > 0);
-            return { ...prevCart, items: updatedItems };
-        });
-    };
-
-    const clearCart = () => {
-        setCart({ id: null, items: [] });
-        console.log("Carrito vaciado");
-    };
-
-    const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-
+    //2. Guardar carrito (invitado y usuarios)
     useEffect(() => {
-        console.log(`🧮 Total de artículos en carrito: ${totalItems}`);
-    }, [totalItems]);
+        const uid = user?._id || user?.id || "guest";
+
+        if (cart?.items?.length > 0) {
+            saveCartInLocalStorage(cart, uid);
+        } else {
+            removeCartFromLocalStorage(uid);
+        }
+    }, [cart, user]);
+
+    //3. Añadir producto
+    const addItem = (product) => {
+        if (!product || !product._id) return;
+
+        setCart((prevCart) => {
+            const existingItem = prevCart.items.find((i) => i._id === product._id);
+
+            const updatedItems = existingItem
+                ? prevCart.items.map((i) => (i._id === product._id ? { ...i, quantity: i.quantity + 1 } : i))
+                : [...prevCart.items, { ...product, quantity: 1 }];
+
+            return { ...prevCart, items: updatedItems };
+        });
+    };
+
+    //4. Eliminar producto
+    const removeItem = (productId) => {
+        if (!productId) return;
+
+        setCart((prevCart) => ({
+            ...prevCart,
+            items: prevCart.items.filter((i) => i._id !== productId),
+        }));
+    };
+
+    //5. Incrementar cantidad
+    const increaseQuantity = (productId) => {
+        setCart((prevCart) => ({
+            ...prevCart,
+            items: prevCart.items.map((i) => (i._id === productId ? { ...i, quantity: i.quantity + 1 } : i)),
+        }));
+    };
+
+    //6. Decrementar cantidad
+    const decreaseQuantity = (productId) => {
+        setCart((prevCart) => ({
+            ...prevCart,
+            items: prevCart.items
+                .map((i) => (i._id === productId ? { ...i, quantity: i.quantity - 1 } : i))
+                .filter((i) => i.quantity > 0),
+        }));
+    };
+
+    //7. Vaciar carrito
+    const clearCart = () => {
+        const uid = user?._id || user?.id || "guest";
+        removeCartFromLocalStorage(uid);
+        setCart({ id: uid, items: [] });
+    };
+
+    //8. Total de artículos
+    const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
         <CartContext
@@ -115,6 +99,7 @@ export const CartProvider = ({ children }) => {
                 clearCart,
                 increaseQuantity,
                 decreaseQuantity,
+                totalItems,
             }}
         >
             {children}

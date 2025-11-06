@@ -11,12 +11,10 @@ import { Avatar } from "./Avatar";
 export const UserAndCart = () => {
     const { pathname } = useLocation();
     const { user } = useContext(AuthContext);
-    const { cart, clearCart } = useContext(CartContext);
+    const { cart, clearCart, totalItems } = useContext(CartContext);
     const { logout } = useAuth();
     const userDropdown = useDropdown();
     const cartDropdown = useDropdown();
-
-    const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
     useEffect(() => {
         userDropdown.setIsOpen(false);
@@ -25,6 +23,56 @@ export const UserAndCart = () => {
 
     return (
         <div className="align-row gap-sm">
+            {/* --- MENÚ CARRITO --- */}
+            {
+                <div className="relative" ref={cartDropdown.ref}>
+                    <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={cartDropdown.isOpen}
+                        onClick={() => {
+                            cartDropdown.setIsOpen((o) => !o);
+                            userDropdown.setIsOpen(false);
+                        }}
+                        className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
+                    >
+                        <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
+
+                        {totalItems > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-brand-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                {totalItems}
+                            </span>
+                        )}
+                    </button>
+
+                    {cartDropdown.isOpen && (
+                        <div
+                            role="menu"
+                            className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
+                        >
+                            <Link
+                                to="/user/cart"
+                                role="menuitem"
+                                className="block rounded-md px-2 py-1 hover:bg-black/5"
+                                onClick={() => cartDropdown.setIsOpen(false)}
+                            >
+                                Mostrar carrito
+                            </Link>
+                            <button
+                                type="button"
+                                role="menuitem"
+                                className="block w-full text-left text-error-900 rounded-md px-2 py-1 hover:bg-black/5"
+                                onClick={() => {
+                                    clearCart();
+                                    cartDropdown.setIsOpen(false);
+                                }}
+                            >
+                                Vaciar carrito
+                            </button>
+                        </div>
+                    )}
+                </div>
+            }
             {/* --- MENÚ USUARIO --- */}
             <div ref={userDropdown.ref} className="relative">
                 <button
@@ -118,57 +166,6 @@ export const UserAndCart = () => {
                     </div>
                 )}
             </div>
-
-            {/* --- MENÚ CARRITO --- */}
-            {user && (
-                <div className="relative" ref={cartDropdown.ref}>
-                    <button
-                        type="button"
-                        aria-haspopup="menu"
-                        aria-expanded={cartDropdown.isOpen}
-                        onClick={() => {
-                            cartDropdown.setIsOpen((o) => !o);
-                            userDropdown.setIsOpen(false);
-                        }}
-                        className="w-12 h-12 shrink-0 rounded-full p-0 bg-transparent cursor-pointer"
-                    >
-                        <img src={trolly} alt="Carrito" className="w-full h-full object-contain" />
-
-                        {totalItems > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-brand-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                {totalItems}
-                            </span>
-                        )}
-                    </button>
-
-                    {cartDropdown.isOpen && (
-                        <div
-                            role="menu"
-                            className="absolute right-0 top-[110%] w-40 bg-white border border-gray-200 rounded-lg shadow-md z-50 p-2"
-                        >
-                            <Link
-                                to="/user/cart"
-                                role="menuitem"
-                                className="block rounded-md px-2 py-1 hover:bg-black/5"
-                                onClick={() => cartDropdown.setIsOpen(false)}
-                            >
-                                Mostrar carrito
-                            </Link>
-                            <button
-                                type="button"
-                                role="menuitem"
-                                className="block w-full text-left text-error-900 rounded-md px-2 py-1 hover:bg-black/5"
-                                onClick={() => {
-                                    clearCart();
-                                    cartDropdown.setIsOpen(false);
-                                }}
-                            >
-                                Vaciar carrito
-                            </button>
-                        </div>
-                    )}
-                </div>
-            )}
         </div>
     );
 };

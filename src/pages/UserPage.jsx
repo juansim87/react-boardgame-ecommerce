@@ -31,7 +31,7 @@ export const UserPage = () => {
 
             {/* 🛒 Sección de resumen del carrito */}
             <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6">
-                <h2 className="text-xl font-semibold text-brand-700 mb-4">🛒 Carrito</h2>
+                <h2 className="text-xl font-semibold text-brand-700 mb-4">🛒 Carrito de compras</h2>
 
                 {totalItems === 0 ? (
                     <p className="text-gray-500">Tu carrito está vacío.</p>
