@@ -4,9 +4,11 @@ import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 
 export const UserPage = () => {
     const { user } = useContext(AuthContext);
+    const { favorites, removeFavorite } = useContext(FavoritesContext);
     const { cart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
     const navigate = useNavigate();
 
@@ -16,7 +18,6 @@ export const UserPage = () => {
 
     return (
         <div className="perfect-center flex-col gap-6 p-6">
-            {/* 🧍 Sección de perfil básico */}
             <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6 flex flex-col items-center gap-4">
                 <h2 className="text-xl font-semibold text-brand-700">👤 Mi cuenta</h2>
                 <div className="w-32 h-32 rounded-full overflow-hidden border">
@@ -29,7 +30,6 @@ export const UserPage = () => {
                 </Button>
             </section>
 
-            {/* 🛒 Sección de resumen del carrito */}
             <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-brand-700 mb-4">🛒 Carrito de compras</h2>
 
@@ -74,15 +74,45 @@ export const UserPage = () => {
                 )}
             </section>
 
-            {/* ❤️ Sección de favoritos */}
             <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-brand-700 mb-4">❤️ Favoritos</h2>
 
-                <p className="text-gray-500">
-                    Aún no tienes productos favoritos. ¡Haz clic en el corazón de un producto para guardarlo
-                    aquí!
-                </p>
-                {/* Cuando tengas la lógica, aquí mapearás los favoritos */}
+                {favorites.length === 0 ? (
+                    <p className="text-gray-500">
+                        Aún no tienes productos favoritos. ¡Haz clic en el corazón de un producto para
+                        guardarlo aquí!
+                    </p>
+                ) : (
+                    <div className="flex flex-col gap-4">
+                        {favorites.map((item) => (
+                            <div key={item.id || item._id} className="flex items-center gap-4 border-b pb-3">
+                                <img
+                                    src={item.images?.[0]}
+                                    alt={item.name}
+                                    className="w-16 h-16 object-cover rounded"
+                                />
+
+                                <div className="flex-1">
+                                    <p className="font-medium">{item.name}</p>
+                                    <p className="text-sm text-gray-600">{item.price.toFixed(2)} €</p>
+
+                                    <div className="flex gap-4 mt-1">
+                                        <Link to={`/products/${item.id || item._id}`}>
+                                            <Button variant="primary">Ir al producto</Button>
+                                        </Link>
+
+                                        <Button
+                                            variant="danger"
+                                            onClick={() => removeFavorite(item.id || item._id)}
+                                        >
+                                            Quitar
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </section>
         </div>
     );
