@@ -6,20 +6,23 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 import { ProductsProvider } from "./context/ProductsContext.jsx";
+import { ToastProvider } from "./context/ToastContext.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
-            <AuthProvider>
-                <CartProvider>
-                    <FavoritesProvider>
-                        <ProductsProvider>
-                            <App />
-                        </ProductsProvider>
-                    </FavoritesProvider>
-                </CartProvider>
-            </AuthProvider>
+            <ToastProvider>
+                <AuthProvider>
+                    <CartProvider>
+                        <FavoritesProvider>
+                            <ProductsProvider>
+                                <App />
+                            </ProductsProvider>
+                        </FavoritesProvider>
+                    </CartProvider>
+                </AuthProvider>
+            </ToastProvider>
         </BrowserRouter>
     </StrictMode>
 );

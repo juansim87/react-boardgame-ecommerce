@@ -23,7 +23,8 @@ const getColorByInitial = (char) => {
     return COLORS[index];
 };
 
-const isValidSrc = (s) => typeof s === "string" && s.trim() !== "" && s !== "null" && s !== "undefined";
+const isValidSrc = (src) =>
+    typeof src === "string" && src.trim() !== "" && src !== "null" && src !== "undefined";
 
 export const Avatar = ({ src, name = "", sizeClass = "w-12 h-12" }) => {
     const initial = (name?.trim()?.charAt(0) || "?").toUpperCase();

@@ -18,7 +18,11 @@ import { Footer } from "./sections/Footer";
 import { Header } from "./sections/Header";
 import { MainBox } from "./sections/MainBox";
 
+import { ToastContainer } from "./components/Toast/ToastContainer";
+import { useToastContext } from "./context/ToastContext";
+
 export const App = () => {
+    const toast = useToastContext();
     return (
         <div className="w-full">
             <Header />
@@ -41,6 +45,7 @@ export const App = () => {
                     </Route>
                     <Route path="*" element={<Page404 />} />
                 </Routes>
+                <ToastContainer toasts={toast.toasts} onClose={toast.removeToast} />
             </MainBox>
             <Footer />
         </div>

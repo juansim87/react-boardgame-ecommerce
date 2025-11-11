@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useToastContext } from "../context/ToastContext.jsx";
 import {
     getCartFromLocalStorage,
     removeCartFromLocalStorage,
@@ -11,6 +12,7 @@ export const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState({ id: null, items: [] });
     const { user } = useContext(AuthContext);
+    const { success, info, error, warning } = useToastContext();
 
     //Load cart by user or guest
     useEffect(() => {
@@ -58,11 +60,8 @@ export const CartProvider = ({ children }) => {
             items: Array.from(fusionMap.values()),
         };
 
-        console.log("🟢 Carrito fusionado:", mergedCart);
-
         saveCartInLocalStorage(mergedCart, userId);
 
-        console.log("🗑️ Eliminando cart_guest tras migración");
         removeCartFromLocalStorage("guest");
 
         setCart(mergedCart);
@@ -94,16 +93,24 @@ export const CartProvider = ({ children }) => {
 
             return { ...prevCart, items: updatedItems };
         });
+
+        success("Producto añadido correctamente");
     };
 
     // Delete products
     const removeItem = (productId) => {
         if (!productId) return;
 
-        setCart((prevCart) => ({
-            ...prevCart,
-            items: prevCart.items.filter((item) => item._id !== productId),
-        }));
+        const deleteConfirmation = confirm("¿Deseas eliminar este producto?");
+
+        if (deleteConfirmation) {
+            setCart((prevCart) => ({
+                ...prevCart,
+                items: prevCart.items.filter((item) => item._id !== productId),
+            }));
+
+            error("Producto eliminado correctamente");
+        }
     };
 
     // Increase products
@@ -137,7 +144,7 @@ export const CartProvider = ({ children }) => {
     const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
-        <CartContext
+        <CartContext.Provider
             value={{
                 cart,
                 setCart,
@@ -150,6 +157,6 @@ export const CartProvider = ({ children }) => {
             }}
         >
             {children}
-        </CartContext>
+        </CartContext.Provider>
     );
 };

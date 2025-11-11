@@ -78,8 +78,16 @@ export const Card = ({ product }) => {
                     {product.description && <p className="text-gray-700 mb-4">{product.description}</p>}
                     <p className="text-lg font-medium mb-4">{product.price} €</p>
 
-                    <div className="perfect-center gap-2">
+                    <div className="perfect-center gap-4">
+                        <div
+                            className="w-8 cursor-pointer transition-transform duration-200 hover:scale-110"
+                            onClick={handleLike}
+                        >
+                            <img src={liked ? like : noLike} alt="Like" className="w-full" />
+                        </div>
+
                         {user && user.role === "admin" && <EditProductButton id={product._id} />}
+
                         <Button variant="primary" onClick={() => setIsOpen(false)}>
                             Cerrar
                         </Button>
