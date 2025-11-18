@@ -114,6 +114,13 @@ export const UserPage = () => {
                     </div>
                 )}
             </section>
+            {user.role === "admin" && (
+                <div>
+                    <Link to={"/admin/usermanager"}>
+                        <Button variant="primary">Gestionar usuarios</Button>
+                    </Link>
+                </div>
+            )}
         </div>
     );
 };

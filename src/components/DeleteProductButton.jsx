@@ -7,7 +7,7 @@ export const DeleteProductButton = ({ id, name }) => {
     const { removeProduct } = useContext(ProductsContext);
     const [loading, setLoading] = useState(false);
 
-    const onClick = async (event) => {
+    const handleDelete = async (event) => {
         event.preventDefault();
 
         const ok = window.confirm(`Vas a borrar "${name || id}". Esta acción es permanente. ¿Continuar?`);
@@ -23,7 +23,7 @@ export const DeleteProductButton = ({ id, name }) => {
 
             if (status === 404) {
                 console.warn("El producto ya no existe en la API, limpiando localmente...");
-                removeProduct(id); // 🧹 se elimina igual del contexto y localStorage
+                removeProduct(id); // se elimina igual del contexto y localStorage
                 alert(`"${name || id}" ya no existía en la API, se ha eliminado localmente.`);
             } else {
                 console.error("Error al borrar el producto:", error);
@@ -33,7 +33,7 @@ export const DeleteProductButton = ({ id, name }) => {
     };
 
     return (
-        <Button variant="danger" onClick={onClick} disabled={loading} title="Borrar producto">
+        <Button variant="danger" onClick={handleDelete} disabled={loading} title="Borrar producto">
             {loading ? "..." : "Eliminar 🗑️"}
         </Button>
     );

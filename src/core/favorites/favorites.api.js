@@ -5,10 +5,9 @@ import { api } from "../http/axios";
 export const getFavoritesApi = async (userId) => {
     try {
         const response = await api.get(`/users/${userId}/favoritos`);
-        console.log("[FAV API] GET favoritos →", response.data);
         return response.data.favoritos || [];
     } catch (err) {
-        console.error("[FAV API], Error GET favoritos:", err);
+        console.error(" Error GET favoritos:", err);
         return [];
     }
 };

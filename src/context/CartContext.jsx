@@ -109,7 +109,7 @@ export const CartProvider = ({ children }) => {
                 items: prevCart.items.filter((item) => item._id !== productId),
             }));
 
-            error("Producto eliminado correctamente");
+            info("Producto eliminado correctamente");
         }
     };
 

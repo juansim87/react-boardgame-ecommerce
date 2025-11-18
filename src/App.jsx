@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { CreateProductForm } from "./components/CreateProductForm";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { ToastContainer } from "./components/Toast/ToastContainer";
+import { useToastContext } from "./context/ToastContext";
 import { AboutPage } from "./pages/AboutPage";
 import { CartPage } from "./pages/CartPage";
 import { EditProductPage } from "./pages/EditProductPage";
@@ -12,14 +14,12 @@ import { ProductsPage } from "./pages/ProductsPage";
 import { ProfileEditPage } from "./pages/ProfileEditPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { UserManagerPage } from "./pages/UserManagerPage";
 import { UserPage } from "./pages/UserPage";
 import { AdminRoute } from "./router/AdminRoute";
 import { Footer } from "./sections/Footer";
 import { Header } from "./sections/Header";
 import { MainBox } from "./sections/MainBox";
-
-import { ToastContainer } from "./components/Toast/ToastContainer";
-import { useToastContext } from "./context/ToastContext";
 
 export const App = () => {
     const toast = useToastContext();
@@ -39,6 +39,7 @@ export const App = () => {
                         <Route path="/user/profile" element={<ProfilePage />} />
                         <Route path="/user/profile/edit" element={<ProfileEditPage />} />
                         <Route element={<AdminRoute />}>
+                            <Route path="/admin/usermanager" element={<UserManagerPage />} />
                             <Route path="/admin/products/edit" element={<EditProductPage />} />
                             <Route path="/admin/products/create" element={<CreateProductForm />} />
                         </Route>

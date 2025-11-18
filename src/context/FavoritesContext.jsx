@@ -21,9 +21,9 @@ export const FavoritesProvider = ({ children }) => {
         }
 
         const load = async () => {
-            console.log("%c[FAV CTX] Cargando favoritos de usuario:", "color: purple;", userId);
+            console.log("Cargando favoritos de usuario:", "color: purple;", userId);
             const favs = await getFavoritesApi(userId);
-            console.log("%c[FAV CTX] Favoritos cargados:", "color: purple;", favs);
+            console.log("Favoritos cargados:", "color: purple;", favs);
             setFavorites(favs);
         };
 

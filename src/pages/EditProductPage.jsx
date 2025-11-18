@@ -10,7 +10,7 @@ import { ProductsContext } from "../context/ProductsContext";
 
 export const EditProductPage = () => {
     const { user } = useContext(AuthContext);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const { products } = useContext(ProductsContext);
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export const EditProductPage = () => {
             <Button variant="primary" onClick={() => navigate("/admin/products/create")}>
                 Añadir producto ➕​
             </Button>
-            <ul className="w-120 flex flex-col justify-center gap-3">
+            <ul className="list">
                 {products
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((product) => (
