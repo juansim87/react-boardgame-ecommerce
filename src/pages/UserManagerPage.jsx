@@ -32,13 +32,12 @@ export const UserManagerPage = () => {
     return (
         <div className="w-full perfect-center gap-4">
             <h2>Gestor de usuarios</h2>
-            <div className="list">
+            <div className="list gap-5">
                 {userList.map((user) => (
                     <li key={user.id} className="w-full flex justify-between items-center">
-                        <div className="align-row">
+                        <div className="align-row gap-2">
                             <Avatar src={user.avatar} sizeClass="w-20 h-20" />
-
-                            <p>{user.name}</p>
+                            <p className="text-lg">{user.name}</p>
                         </div>
                         <Button variant="danger" onClick={() => handleDeleteUser(user.id)}>
                             Eliminar usuario

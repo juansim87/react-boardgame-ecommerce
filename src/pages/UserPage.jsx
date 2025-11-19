@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
+import { QuantitySelector } from "../components/QuantitySelector";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { FavoritesContext } from "../context/FavoritesContext";
@@ -30,11 +31,16 @@ export const UserPage = () => {
                 </Button>
             </section>
 
-            <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6">
+            <section className="w-full max-w-3xl perfect-center bg-white border rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-brand-700 mb-4">🛒 Carrito de compras</h2>
 
                 {totalItems === 0 ? (
-                    <p className="text-gray-500">Tu carrito está vacío.</p>
+                    <div className="perfect-center gap-4">
+                        <p className="text-gray-500 text-center">Tu carrito está vacío.</p>
+                        <Link to={"/products"}>
+                            <Button>Añadir productos</Button>
+                        </Link>
+                    </div>
                 ) : (
                     <div className="flex flex-col gap-3">
                         {cartPreview.map((item) => (
@@ -48,15 +54,7 @@ export const UserPage = () => {
                                     <p className="font-medium">{item.name}</p>
                                     <p className="text-sm text-gray-600">{item.price.toFixed(2)} €</p>
                                 </div>
-                                <div className="flex items-center gap 2">
-                                    <Button variant="secondary" onClick={() => decreaseQuantity(item._id)}>
-                                        −
-                                    </Button>
-                                    <span className="w-6 text-center">{item.quantity}</span>
-                                    <Button variant="secondary" onClick={() => increaseQuantity(item._id)}>
-                                        +
-                                    </Button>
-                                </div>
+                                <QuantitySelector item={item} />
                             </div>
                         ))}
 
@@ -74,7 +72,7 @@ export const UserPage = () => {
                 )}
             </section>
 
-            <section className="w-full max-w-3xl bg-white border rounded-2xl shadow-md p-6">
+            <section className="w-full max-w-3xl perfect-center bg-white border rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-brand-700 mb-4">❤️ Favoritos</h2>
 
                 {favorites.length === 0 ? (

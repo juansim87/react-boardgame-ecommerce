@@ -1,6 +1,7 @@
 import { useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
+import { QuantitySelector } from "../components/QuantitySelector";
 import { CartContext } from "../context/CartContext";
 
 export const CartPage = () => {
@@ -26,7 +27,6 @@ export const CartPage = () => {
 
     return (
         <div className="flex gap-10 p-8 max-w-5xl mx-auto">
-            {/* Lista de productos */}
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl font-semibold text-brand-700">Tus pedidos</h1>
                 {cart.items.map((item) => (
@@ -47,20 +47,7 @@ export const CartPage = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            <div className="flex items-center gap-2">
-                                <Button variant="secondary" onClick={() => decreaseQuantity(item._id)}>
-                                    −
-                                </Button>
-                                <span className="w-6 text-center">{item.quantity}</span>
-                                <Button variant="secondary" onClick={() => increaseQuantity(item._id)}>
-                                    +
-                                </Button>
-                            </div>
-                            <Button variant="danger" onClick={() => removeItem(item._id)}>
-                                Eliminar
-                            </Button>
-                        </div>
+                        <QuantitySelector item={item} />
                     </div>
                 ))}
             </div>
