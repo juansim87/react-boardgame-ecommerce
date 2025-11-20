@@ -1,6 +1,5 @@
 import { useContext, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { CategoryChips } from "../components/CategoryChips";
 import { PriceFilter } from "../components/PriceFilter";
@@ -12,7 +11,6 @@ export const ProductsPage = () => {
     const [searchParams] = useSearchParams();
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
-    const [isActive, setIsActive] = useState(false);
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -48,19 +46,9 @@ export const ProductsPage = () => {
         <div className="perfect-center justify-start min-h-dvh bg-brand-200 p-12 gap-8">
             <h1>Resultados</h1>
             <CategoryChips selected={selected} onChange={setSelected} />
-            <div className="perfect-center gap-4">
-                <Button onClick={handleClick}>
-                    {isActive ? "Ocultar filtro de precio" : "Mostrar filtro de precio"}
-                </Button>
-                {isActive && (
-                    <PriceFilter
-                        min={minPrice}
-                        max={maxPrice}
-                        onMinChange={setMinPrice}
-                        onMaxChange={setMaxPrice}
-                    />
-                )}
-            </div>
+
+            <PriceFilter min={minPrice} max={maxPrice} onMinChange={setMinPrice} onMaxChange={setMaxPrice} />
+
             {products.length <= 0 ? (
                 <p>No hay productos disponibles</p>
             ) : (

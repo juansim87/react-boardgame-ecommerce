@@ -15,15 +15,12 @@ export const FavoritesProvider = ({ children }) => {
         const userId = getUserId();
 
         if (!userId) {
-            console.log("%c[FAV CTX] No hay usuario → favoritos = []", "color: purple;");
             setFavorites([]);
             return;
         }
 
         const load = async () => {
-            console.log("Cargando favoritos de usuario:", "color: purple;", userId);
             const favs = await getFavoritesApi(userId);
-            console.log("Favoritos cargados:", "color: purple;", favs);
             setFavorites(favs);
         };
 
@@ -36,11 +33,9 @@ export const FavoritesProvider = ({ children }) => {
             console.warn("[FAV CTX] Intento de añadir favorito sin usuario");
             return;
         }
-        console.log("[FAV CTX] ADD favorito:", { userId, productId });
 
         const updated = await addFavoriteApi(userId, productId);
         if (updated) {
-            console.log("[FAV CTX] Favoritos (ADD) ->", updated);
             setFavorites(updated);
         }
     };
@@ -55,7 +50,6 @@ export const FavoritesProvider = ({ children }) => {
 
         const updated = await removeFavoriteApi(userId, productId);
         if (updated) {
-            console.log("[FAV CTX] Favoritos (DELETE) ->", updated);
             setFavorites(updated);
         }
     };

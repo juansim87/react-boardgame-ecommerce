@@ -42,8 +42,8 @@ export const PriceFilter = ({ min, max, onMinChange, onMaxChange }) => {
     const hasValues = min !== "" || max !== "";
 
     return (
-        <div className="flex flex-col gap-2 items-start">
-            <div className="perfect-center gap-4">
+        <div className="perfect-center gap-2 items-start">
+            <div className="flex gap-4">
                 <div className="flex gap-3">
                     <label className="flex items-center gap-2">
                         <span>Desde:</span>
@@ -69,13 +69,12 @@ export const PriceFilter = ({ min, max, onMinChange, onMaxChange }) => {
                 <Button variant={hasValues ? "secondary" : "ghost"} onClick={handleReset}>
                     Limpiar
                 </Button>
+                {hasValues && (
+                    <p className="text-sm text-gray-700">
+                        Mostrando productos {min && `desde ${min} €`} {max && `hasta ${max} €`}
+                    </p>
+                )}
             </div>
-
-            {hasValues && (
-                <p className="text-sm text-gray-700">
-                    Mostrando productos {min && `desde ${min} €`} {max && `hasta ${max} €`}
-                </p>
-            )}
         </div>
     );
 };

@@ -5,7 +5,7 @@ import { QuantitySelector } from "../components/QuantitySelector";
 import { CartContext } from "../context/CartContext";
 
 export const CartPage = () => {
-    const { cart, clearCart, increaseQuantity, decreaseQuantity, removeItem } = useContext(CartContext);
+    const { cart, clearCart } = useContext(CartContext);
 
     const { totalItems, totalPrice } = useMemo(() => {
         const items = cart?.items || [];
@@ -29,8 +29,13 @@ export const CartPage = () => {
         <div className="flex gap-10 p-8 max-w-5xl mx-auto">
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl font-semibold text-brand-700">Tus pedidos</h1>
-                {cart.items.map((item) => (
-                    <div key={item._id} className="flex items-center justify-between border-b pb-3 gap-4">
+                {cart.items.map((item, index) => (
+                    <div
+                        key={item._id}
+                        className={`flex items-center justify-between pb-3 gap-4 ${
+                            index !== cart.items.length - 1 ? "border-b" : ""
+                        }`}
+                    >
                         <div className="flex items-center gap-4">
                             <img
                                 src={item.images?.[0]}
@@ -47,13 +52,12 @@ export const CartPage = () => {
                                 </p>
                             </div>
                         </div>
-                        <QuantitySelector item={item} />
+                        <QuantitySelector item={item} key={item._id} />
                     </div>
                 ))}
             </div>
 
-            {/* Totales y acciones */}
-            <div className="perfect-center pt-4">
+            <div className="h-full flex flex-col items-center justify-between pt-4">
                 <div>
                     <p className="font-medium text-lg">Total artículos: {totalItems}</p>
                     <p className="text-xl font-bold text-brand-700">Total: {totalPrice.toFixed(2)} €</p>

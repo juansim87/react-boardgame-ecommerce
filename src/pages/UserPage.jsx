@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
-import { QuantitySelector } from "../components/QuantitySelector";
+import { CartSummary } from "../components/CartSummary";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { FavoritesContext } from "../context/FavoritesContext";
@@ -44,18 +44,7 @@ export const UserPage = () => {
                 ) : (
                     <div className="flex flex-col gap-3">
                         {cartPreview.map((item) => (
-                            <div key={item._id} className="flex items-center gap-4 border-b pb-2">
-                                <img
-                                    src={item.images?.[0]}
-                                    alt={item.name}
-                                    className="w-16 h-16 rounded-lg object-cover"
-                                />
-                                <div className="flex-1">
-                                    <p className="font-medium">{item.name}</p>
-                                    <p className="text-sm text-gray-600">{item.price.toFixed(2)} €</p>
-                                </div>
-                                <QuantitySelector item={item} />
-                            </div>
+                            <CartSummary item={item} key={item._id} />
                         ))}
 
                         {cart.items.length > 3 && (
