@@ -65,7 +65,7 @@ export const CartPage = () => {
 
                 <div className="perfect-center gap-3">
                     <Link to="/products">
-                        <Button variant="secondary">Seguir comprando</Button>
+                        <Button variant="primary">Seguir comprando</Button>
                     </Link>
                     <Button variant="danger" onClick={clearCart}>
                         Vaciar carrito

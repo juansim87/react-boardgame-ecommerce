@@ -6,7 +6,7 @@ import { getUsersApi, removeUserApi } from "../core/users/users.api";
 
 export const UserManagerPage = () => {
     const [userList, setUserList] = useState([]);
-    const { success, info, error, warning } = useToastContext();
+    const toast = useToastContext();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -25,7 +25,7 @@ export const UserManagerPage = () => {
         const result = await removeUserApi(userId);
         if (result) {
             setUserList((prev) => prev.filter((user) => user.id !== userId));
-            info(`El usuario ${selectedUser.name} ha sido eliminado correctamente`);
+            toast.info(`El usuario ${selectedUser.name} ha sido eliminado correctamente`);
         }
     };
 
